@@ -1,0 +1,6 @@
+@MentorAi_backd_HostAddress = http://localhost:5220
+
+GET {{MentorAi_backd_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
