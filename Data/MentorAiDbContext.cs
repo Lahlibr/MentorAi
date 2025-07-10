@@ -6,7 +6,7 @@ namespace MentorAi_backd.Data
     public class MentorAiDbContext : DbContext
     {
         public MentorAiDbContext(DbContextOptions<MentorAiDbContext>options):base(options) { }
-        public DbSet<User> Students { get; set; }
+        public DbSet<User> Users { get; set; }
 
 
         public override int SaveChanges()

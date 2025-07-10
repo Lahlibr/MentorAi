@@ -5,6 +5,6 @@ namespace MentorAi_backd.Repositories.Interfaces
     public interface ITokenRepo
     {
         string GenerateAccessToken(User user);
-        string GenerateRefreshToken(User user);
+        string GenerateRefreshToken();
     }
 }

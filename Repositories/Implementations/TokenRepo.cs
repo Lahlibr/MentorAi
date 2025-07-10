@@ -1,6 +1,6 @@
-﻿using MentorAi_backd.Repositories.Interfaces;
+﻿using MentorAi_backd.Models.Entity;
+using MentorAi_backd.Repositories.Interfaces;
 using Microsoft.IdentityModel.Tokens;
-using Org.BouncyCastle.Pqc.Crypto.Crystals.Dilithium;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -19,6 +19,7 @@ namespace MentorAi_backd.Repositories.Implementations
         {
             var claims = new List<Claim> 
             {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name,user.UserName),
                 new Claim(ClaimTypes.Email,user.Email),
                 new Claim(ClaimTypes.Role,user.UserRole.ToString())
@@ -40,7 +41,7 @@ namespace MentorAi_backd.Repositories.Implementations
         }
         public string GenerateRefreshToken()
         {
-            var token = new byte[64];
+            var randomBytes = new byte[64];
             using var rng = RandomNumberGenerator.Create();
             rng.GetBytes(randomBytes);
             return Convert.ToBase64String(randomBytes);

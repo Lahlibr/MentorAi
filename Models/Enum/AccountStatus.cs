@@ -5,6 +5,6 @@
         PendingVerification,
         Active,
         Blocked,
-        Suspended
+        LockedOut
     }
 }

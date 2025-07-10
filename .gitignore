@@ -1,0 +1,28 @@
+# Ignore build and publish folders
+bin/
+obj/
+
+# Ignore user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignore IDE-specific folders
+.vs/
+.idea/
+.vscode/
+
+# Ignore logs and cache
+*.log
+*.tmp
+*.cache
+
+# Ignore generated files
+*.dbmdl
+*.dbml
+*.sdf
+
+# Ignore any secrets/configs you shouldn't commit
+secrets.json
+appsettings.*.json

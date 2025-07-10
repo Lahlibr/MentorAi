@@ -1,16 +1,20 @@
-﻿namespace MentorAi_backd.Exceptions
+﻿using System;
+using System.Collections.Generic;
+
+namespace MentorAi_backd.Exceptions
 {
     public class ValidationException : Exception
     {
-        // if full error
-        public List<string> Errors { get; }
-        public ValidationException(string message,List<string>? errors = null) : base(message)
+        public IDictionary<string, string[]> Errors { get; }
+
+        public ValidationException(string message) : base(message)
         {
-            Errors = errors ?? new List<string>();
+            Errors = new Dictionary<string, string[]>();
         }
-        //for specific errors
-        public ValidationException(string message) : base(message) {
-            Errors = new List<string> { };
+
+        public ValidationException(string message, IDictionary<string, string[]> errors) : base(message)
+        {
+            Errors = errors ?? new Dictionary<string, string[]>();
         }
     }
 }

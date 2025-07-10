@@ -10,11 +10,11 @@ namespace MentorAi_backd.Models.Entity
         public string UserName { get; set; }
         public string Email { get; set; }
         public UserEnum UserRole { get; set; } = UserEnum.Student;
-        public int Age { get; set; }
-        public int Marks { get; set; }
+        public int? Age { get; set; }
+        public int? Marks { get; set; }
 
     
-        public string PasswordHash { get; set; }
+        public string Password { get; set; }
         public bool EmailVerified { get; set; } = false;
 
        

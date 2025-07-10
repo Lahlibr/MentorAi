@@ -17,12 +17,12 @@ namespace MentorAi_backd.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.6")
+                .HasAnnotation("ProductVersion", "8.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MentorAi_backd.Models.Entity.Students", b =>
+            modelBuilder.Entity("MentorAi_backd.Models.Entity.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,14 +30,17 @@ namespace MentorAi_backd.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Age")
+                    b.Property<DateTime?>("AcceptedTermsAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("Age")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Blocked")
-                        .HasColumnType("bit");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -46,10 +49,34 @@ namespace MentorAi_backd.Migrations
                     b.Property<bool>("EmailVerified")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Marks")
+                    b.Property<int>("FailedLoginAttempts")
                         .HasColumnType("int");
 
-                    b.Property<string>("PasswordHash")
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastFailedLogin")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LastSuccessfulLogin")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastUpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LockoutEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("Marks")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OtpSecret")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -59,9 +86,33 @@ namespace MentorAi_backd.Migrations
                     b.Property<DateTime?>("PasswordResetTokenExpiry")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("ProfileCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ProfileImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RefreshTokenExpiryTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserRole")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("VerificationToken")
                         .HasColumnType("uniqueidentifier");
@@ -71,7 +122,7 @@ namespace MentorAi_backd.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Students");
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

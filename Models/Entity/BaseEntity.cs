@@ -7,6 +7,6 @@
 
         public bool IsDeleted { get; set; }=false;
         public DateTime? DeletedAt { get; set; }
-        public string LastUpdatedBy { get; set; }
+        public string? LastUpdatedBy { get; set; }
     }
 }
