@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "8BMClJlAF1M=",
+  "dgSpecHash": "cbXoKubvOXo=",
   "success": true,
   "projectFilePath": "C:\\Users\\mshah\\MentorAi\\MentorAi-backd\\MentorAi-backd.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mshah\\.nuget\\packages\\adaptivecards\\3.1.0\\adaptivecards.3.1.0.nupkg.sha512",
+    "C:\\Users\\mshah\\.nuget\\packages\\automapper\\15.0.1\\automapper.15.0.1.nupkg.sha512",
+    "C:\\Users\\mshah\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",
     "C:\\Users\\mshah\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\mshah\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
     "C:\\Users\\mshah\\.nuget\\packages\\bcrypt.net-next\\4.0.2\\bcrypt.net-next.4.0.2.nupkg.sha512",

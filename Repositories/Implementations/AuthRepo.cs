@@ -1,4 +1,5 @@
-﻿using MentorAi_backd.Data;
+﻿using AutoMapper;
+using MentorAi_backd.Data;
 using MentorAi_backd.DTO.AuthDto;
 using MentorAi_backd.Exceptions;
 using MentorAi_backd.Models.Entity;
@@ -13,12 +14,14 @@ namespace MentorAi_backd.Repositories.Implementations
         private readonly MentorAiDbContext _context;
         private readonly ITokenRepo _TokenRepo;
         private readonly ILogger<AuthRepo> _logger;
+        private readonly IMapper _mapper;
 
-        public AuthRepo(MentorAiDbContext context, ITokenRepo tokenRepo, ILogger<AuthRepo> logger)
+        public AuthRepo(MentorAiDbContext context, ITokenRepo tokenRepo, ILogger<AuthRepo> logger,IMapper _mapper)
         {
             _context = context;
             _TokenRepo = tokenRepo;
             _logger = logger;
+            _mapper = _mapper;
         }
         public async Task<ApiResponse<RegisterResponseDto>> RegisterAsync(RegisterDto registerDto)
         {
@@ -52,12 +55,8 @@ namespace MentorAi_backd.Repositories.Implementations
 
                 _logger.LogInformation($"User {newUser.UserName} registered. Verification token: {newUser.VerificationToken}");
 
-                var response = new RegisterResponseDto
-                {
-                    UserName = newUser.UserName,
-                    Email = newUser.Email,
-                    Message = "Registration successful. Please verify your email."
-                };
+                var response = _mapper.Map<RegisterResponseDto>(newUser);
+                response.Message = "Registration successful. Please check your email for verification link.";
 
                 return ApiResponse<RegisterResponseDto>.SuccessResponse(response, response.Message);
             }
