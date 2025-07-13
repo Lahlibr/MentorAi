@@ -1,6 +1,8 @@
-﻿using MentorAi_backd.Models.Enum;
+﻿using MentorAi_backd.Models.Entity.Main;
+using MentorAi_backd.Models.Entity.Student;
+using MentorAi_backd.Models.Enum;
 
-namespace MentorAi_backd.Models.Entity
+namespace MentorAi_backd.Models.Entity.UserEntity
 {
     public class Review : BaseEntity
     {

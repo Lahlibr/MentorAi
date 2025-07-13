@@ -1,12 +1,14 @@
-﻿namespace MentorAi_backd.Models.Entity
+﻿using MentorAi_backd.Models.Entity.UserEntity;
+
+namespace MentorAi_backd.Models.Entity.Student
 {
     public class StudentRoadmapProgress
     {
         public int Id { get; set; }
 
         // Refer to userid
-        public int UserId { get; set; }
-        public User User { get; set; } = default!;
+        public int StudentProfileId { get; set; }
+        public StudentProfile StudentProfile { get; set; } = default!;
 
         // Refer to Roadmap
         public int RoadmapId { get; set; }

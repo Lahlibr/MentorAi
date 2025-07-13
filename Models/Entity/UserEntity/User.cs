@@ -1,7 +1,9 @@
 ﻿using MentorAi_backd.DTO.ProfileDto;
+using MentorAi_backd.Models.Entity.Main;
+using MentorAi_backd.Models.Entity.Student;
 using MentorAi_backd.Models.Enum;
 
-namespace MentorAi_backd.Models.Entity
+namespace MentorAi_backd.Models.Entity.UserEntity
 {
     public class User : BaseEntity
     {
@@ -34,6 +36,11 @@ namespace MentorAi_backd.Models.Entity
         //Relationships
         //one to one 
         public StudentProfile? StudentProfile { get; set; }
+        public ReviewerProfile? ReviewerProfile { get; set; }
+        public ICollection<Review> ReviewsAsReviewer { get; set; } = new List<Review>();
+        public ICollection<Review> ReviewsAsStudent { get; set; } = new List<Review>();
+
+
 
     }
 }

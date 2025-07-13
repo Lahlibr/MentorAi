@@ -2,34 +2,46 @@
 using MentorAi_backd.Data;
 using MentorAi_backd.DTO.AuthDto;
 using MentorAi_backd.Exceptions;
+using MentorAi_backd.Migrations;
 using MentorAi_backd.Models.Entity;
+using MentorAi_backd.Models.Entity.Student;
+using MentorAi_backd.Models.Entity.UserEntity;
+using MentorAi_backd.Models.Enum;
 using MentorAi_backd.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Nest;
 using Org.BouncyCastle.Crypto.Generators;
 
 namespace MentorAi_backd.Repositories.Implementations
 {
     public class AuthRepo : IAuthRepo
     {
-        private readonly MentorAiDbContext _context;
+        private readonly IGeneric<User> _userRepo;
+        private readonly IGeneric<StudentProfile> _studentProfileRepo;
+        private readonly IGeneric<ReviewerProfile> _reviwerRepo;
         private readonly ITokenRepo _TokenRepo;
         private readonly ILogger<AuthRepo> _logger;
         private readonly IMapper _mapper;
 
-        public AuthRepo(MentorAiDbContext context, ITokenRepo tokenRepo, ILogger<AuthRepo> logger,IMapper _mapper)
+        public AuthRepo(IGeneric<User> userRepository,
+            IGeneric<StudentProfile> studentProfileRepo,
+            IGeneric<ReviewerProfile> reviwerRepo,  
+            ITokenRepo tokenRepo, ILogger<AuthRepo> logger,IMapper _mapper)
         {
-            _context = context;
+            _reviwerRepo = reviwerRepo;
+            _userRepo = userRepository;
+            _studentProfileRepo = studentProfileRepo;
             _TokenRepo = tokenRepo;
             _logger = logger;
             _mapper = _mapper;
         }
         public async Task<ApiResponse<RegisterResponseDto>> RegisterAsync(RegisterDto registerDto)
         {
-            if (await _context.Users.AnyAsync(u => u.UserName == registerDto.UserName))
+            if (await _userRepo.Query().AnyAsync(u => u.UserName == registerDto.UserName))
             {
                 throw new ConflictException("User with this Username already exists");
             }
-            if (await _context.Users.AnyAsync(u => u.Email == registerDto.Email))
+            if (await _userRepo.Query().AnyAsync(u => u.Email == registerDto.Email))
             {
                 throw new ConflictException("User with this Email already exists");
             }
@@ -44,44 +56,65 @@ namespace MentorAi_backd.Repositories.Implementations
                 UserRole = registerDto.Role,
                 VerificationToken = Guid.NewGuid(),
                 VerificationTokenExpiry = DateTime.UtcNow.AddDays(1),
-                CreatedAt = DateTime.UtcNow,
-                LastUpdatedAt = DateTime.UtcNow
+                
             };
 
-            try
-            {
-                await _context.Users.AddAsync(newUser);
-                await _context.SaveChangesAsync();
-
-                _logger.LogInformation($"User {newUser.UserName} registered. Verification token: {newUser.VerificationToken}");
+           
+                await _userRepo.AddAsync(newUser);
+                if (newUser.UserRole == UserEnum.Student)
+                {
+                    var studentProfile = new StudentProfile
+                    {
+                        UserId = newUser.Id,
+                        Age = 0,
+                        AssessmentScore = 0,
+                        CurrentLearningGoal = "Not set",
+                        PreferredLearningStyle = "Not set"
+                    };
+                    await _studentProfileRepo.AddAsync(studentProfile);
+                }else if (newUser.UserRole == UserEnum.Reviewer)
+                {
+                    var reviewerProfile = new ReviewerProfile
+                    {
+                        UserId = newUser.Id,
+                        Bio = "Not set",
+                        YearsOfExperience = 0,
+                        Availability = "Full-time",
+                        ExpertiseAreasJson = "[]",
+                        AverageRating = 0.0,
+                        ReviewsCompleted = 0,
+                        IsAvailableForReviews = true
+                    };
+                    await _reviwerRepo.AddAsync(reviewerProfile);
+                }
+                _logger.LogInformation($"User {newUser.UserName} registered with role {newUser.UserRole}.");
 
                 var response = _mapper.Map<RegisterResponseDto>(newUser);
                 response.Message = "Registration successful. Please check your email for verification link.";
 
                 return ApiResponse<RegisterResponseDto>.SuccessResponse(response, response.Message);
-            }
-            catch (DbUpdateException ex)
-            {
-                _logger.LogError(ex, "Database update failed during registration");
-                throw new DatabaseException("An error occurred while saving the user to the database.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An unexpected error occurred during registration");
-                throw new Exception("An unexpected error occurred. Please try again later.");
-            }
         }
 
         public async Task<ApiResponse<LoginResponseDto>>LoginAsync(LoginDto loginDto){
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email && !u.IsDeleted);
+            var user = await _userRepo.Query().FirstOrDefaultAsync(u => u.Email == loginDto.Email && !u.IsDeleted);
             if (user == null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password))
             {
-                // Implement lockout logic here
-                user.FailedLoginAttempts++;
-                user.LastFailedLogin = DateTime.UtcNow;
-                await _context.SaveChangesAsync();
+                if (user != null)
+                {
+                    user.FailedLoginAttempts++;
+                    user.LastFailedLogin = DateTime.UtcNow;
+                    if (user.FailedLoginAttempts >= 5 && user.LockoutEnd == null)
+                    {
+                        user.LockoutEnd = DateTime.UtcNow.AddMinutes(15);
+                        user.Status = AccountStatus.LockedOut;
+                        _logger.LogWarning($"Account '{user.Email}' locked due to failed login attempts.");
+                    }await _userRepo.UpdateAsync(user);
+                }
+          
+                
+               
                 throw new UnauthorizedException("Invalid credentials."); }
-            if (user.Status == Models.Enum.AccountStatus.LockedOut)
+            if (user.Status == AccountStatus.LockedOut)
             {
                 if (user.LockoutEnd > DateTime.UtcNow)
                 {
@@ -89,16 +122,17 @@ namespace MentorAi_backd.Repositories.Implementations
                 }
                 else
                 {
-                    user.Status = Models.Enum.AccountStatus.Active;
+                    user.Status = AccountStatus.Active;
                     user.FailedLoginAttempts = 0;
                     user.LockoutEnd = null;
+                    _logger.LogInformation($"Account '{user.Email}' unlocked after lockout period.");
                 }
             }
             //if (user.Status == Models.Enum.AccountStatus.PendingVerification)
             //{
             //    throw new ForbiddenException("Account not verified. Please check your email for verification link.");
             //}
-            if(user.Status == Models.Enum.AccountStatus.Blocked)
+            if(user.Status == AccountStatus.Blocked)
             {
                 throw new ForbiddenException("Account is blocked. Contact support for assistance.");
             }
@@ -110,8 +144,8 @@ namespace MentorAi_backd.Repositories.Implementations
             
             user.RefreshToken = BCrypt.Net.BCrypt.HashPassword(refreshToken);
             user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
-            user.CreatedAt = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
+            
+            await _userRepo.UpdateAsync(user);
             
             var loginResponse = new LoginResponseDto
             {
@@ -128,7 +162,7 @@ namespace MentorAi_backd.Repositories.Implementations
 
         public async Task<ApiResponse<string>> VerifyEmailAsync(Guid token)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.VerificationToken == token);
+            var user = await _userRepo.Query().FirstOrDefaultAsync(u => u.VerificationToken == token);
 
             if (user == null)
             {
@@ -146,13 +180,13 @@ namespace MentorAi_backd.Repositories.Implementations
             user.VerificationToken = null;
             user.VerificationTokenExpiry = null;
             user.Status = Models.Enum.AccountStatus.Active;
-            await _context.SaveChangesAsync();
+            await _userRepo.UpdateAsync(user);
             return ApiResponse<string>.SuccessResponse("Email verified successfully.", "Your email has been verified.");
         }
 
         public async Task<ApiResponse<string>> ResendVerificationEmailAsync(string email)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var user = await _userRepo.Query().FirstOrDefaultAsync(u => u.Email == email);
 
             if (user == null)
                 throw new NotFoundException("User not found.");
@@ -163,7 +197,7 @@ namespace MentorAi_backd.Repositories.Implementations
             user.VerificationToken = Guid.NewGuid();
             user.VerificationTokenExpiry = DateTime.UtcNow.AddDays(1);
 
-            await _context.SaveChangesAsync();
+            await _userRepo.UpdateAsync(user);
 
             // 🔔 Send verification email logic here (through a service)
             _logger.LogInformation($"Resent verification token: {user.VerificationToken}");

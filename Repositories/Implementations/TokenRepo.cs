@@ -1,4 +1,4 @@
-﻿using MentorAi_backd.Models.Entity;
+﻿using MentorAi_backd.Models.Entity.UserEntity;
 using MentorAi_backd.Repositories.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

@@ -1,4 +1,7 @@
-﻿namespace MentorAi_backd.Models.Entity
+﻿using MentorAi_backd.Models.Entity.Main;
+using MentorAi_backd.Models.Entity.Student;
+
+namespace MentorAi_backd.Models.Entity.UserEntity
 {
     public class Certification : BaseEntity
     {

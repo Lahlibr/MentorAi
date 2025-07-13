@@ -1,4 +1,4 @@
-﻿using MentorAi_backd.Models.Entity;
+﻿using MentorAi_backd.Models.Entity.UserEntity;
 
 namespace MentorAi_backd.Repositories.Interfaces
 {

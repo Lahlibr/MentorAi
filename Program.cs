@@ -40,7 +40,7 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
         ValidAudience = builder.Configuration["JwtSettings:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]))
+            Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]))
     };
 });
 
@@ -63,6 +63,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthRepo, AuthRepo>();
 builder.Services.AddScoped<ITokenRepo, TokenRepo>();
+builder.Services.AddScoped(typeof(IGeneric<>), typeof(Generic<>));
+
 
 // ---------------------------
 // 5. AutoMapper

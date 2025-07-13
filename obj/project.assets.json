@@ -19,28 +19,26 @@
           }
         }
       },
-      "AutoMapper/15.0.1": {
+      "AutoMapper/12.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Logging": "8.0.0",
-          "Microsoft.Extensions.Options": "8.0.0",
-          "Microsoft.IdentityModel.JsonWebTokens": "8.0.1"
+          "Microsoft.CSharp": "4.7.0"
         },
         "compile": {
-          "lib/net8.0/AutoMapper.dll": {
+          "lib/netstandard2.1/AutoMapper.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net8.0/AutoMapper.dll": {
+          "lib/netstandard2.1/AutoMapper.dll": {
             "related": ".xml"
           }
         }
       },
-      "AutoMapper.Extensions.Microsoft.DependencyInjection/11.0.0": {
+      "AutoMapper.Extensions.Microsoft.DependencyInjection/12.0.0": {
         "type": "package",
         "dependencies": {
-          "AutoMapper": "11.0.0",
+          "AutoMapper": "12.0.0",
           "Microsoft.Extensions.Options": "6.0.0"
         },
         "compile": {
@@ -2247,35 +2245,30 @@
         "lib/netstandard2.0/AdaptiveCards.xml"
       ]
     },
-    "AutoMapper/15.0.1": {
-      "sha512": "kNo7iIAi4p4XxoEbfif2WUQtc6RTx+UteiRYPqCOKj+4q4+YaWono06qTxoHBy+0N1HdganA//k5p/VmWw2AMA==",
+    "AutoMapper/12.0.0": {
+      "sha512": "0Rmg0zI5AFu1O/y//o9VGyhxKjhggWpk9mOA1tp0DEVx40c61bs+lnQv+0jUq8XbniF7FKgIVvI1perqiMtLrA==",
       "type": "package",
-      "path": "automapper/15.0.1",
+      "path": "automapper/12.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "LICENSE.md",
         "README.md",
-        "automapper.15.0.1.nupkg.sha512",
+        "automapper.12.0.0.nupkg.sha512",
         "automapper.nuspec",
         "icon.png",
-        "lib/net8.0/AutoMapper.dll",
-        "lib/net8.0/AutoMapper.xml",
-        "lib/net9.0/AutoMapper.dll",
-        "lib/net9.0/AutoMapper.xml",
-        "lib/netstandard2.0/AutoMapper.dll",
-        "lib/netstandard2.0/AutoMapper.xml"
+        "lib/netstandard2.1/AutoMapper.dll",
+        "lib/netstandard2.1/AutoMapper.xml"
       ]
     },
-    "AutoMapper.Extensions.Microsoft.DependencyInjection/11.0.0": {
-      "sha512": "0asw5WxdCFh2OTi9Gv+oKyH9SzxwYQSnO8TV5Dd0GggovILzJW4UimP26JAcxc3yB5NnC5urooZ1BBs8ElpiBw==",
+    "AutoMapper.Extensions.Microsoft.DependencyInjection/12.0.0": {
+      "sha512": "XCJ4E3oKrbRl1qY9Mr+7uyC0xZj1+bqQjmQRWTiTKiVuuXTny+7YFWHi20tPjwkMukLbicN6yGlDy5PZ4wyi1w==",
       "type": "package",
-      "path": "automapper.extensions.microsoft.dependencyinjection/11.0.0",
+      "path": "automapper.extensions.microsoft.dependencyinjection/12.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "README.md",
-        "automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",
+        "automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
         "automapper.extensions.microsoft.dependencyinjection.nuspec",
         "icon.png",
         "lib/netstandard2.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll"
@@ -5753,8 +5746,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "AutoMapper >= 15.0.1",
-      "AutoMapper.Extensions.Microsoft.DependencyInjection >= 11.0.0",
+      "AutoMapper.Extensions.Microsoft.DependencyInjection >= 12.0.0",
       "BCrypt.Net-Next >= 4.0.2",
       "LibGit2Sharp >= 0.31.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.5",
@@ -5822,13 +5814,9 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
-          "AutoMapper": {
-            "target": "Package",
-            "version": "[15.0.1, )"
-          },
           "AutoMapper.Extensions.Microsoft.DependencyInjection": {
             "target": "Package",
-            "version": "[11.0.0, )"
+            "version": "[12.0.0, )"
           },
           "BCrypt.Net-Next": {
             "target": "Package",

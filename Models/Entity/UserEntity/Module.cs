@@ -1,4 +1,6 @@
-﻿namespace MentorAi_backd.Models.Entity
+﻿using MentorAi_backd.Models.Entity.Main;
+
+namespace MentorAi_backd.Models.Entity.UserEntity
 {
     public class Module : BaseEntity
     {

@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MentorAi-backd")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7b49b1dfef77214a30a8cd6eb525419753f6a0a7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+228a9a85f9452b88ebebb019e3325a69ab29677f")]
 [assembly: System.Reflection.AssemblyProductAttribute("MentorAi-backd")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MentorAi-backd")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

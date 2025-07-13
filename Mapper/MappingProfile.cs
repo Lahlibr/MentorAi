@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MentorAi_backd.DTO.AuthDto;
-using MentorAi_backd.Models.Entity;
+using MentorAi_backd.Models.Entity.UserEntity;
 
 namespace MentorAi_backd.Mapper
 {
