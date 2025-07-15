@@ -54,53 +54,7 @@ namespace MentorAi_backd.Infrastructure.Persistance.Data.DbConfigurations
                 .OnDelete(DeleteBehavior.Restrict);
 
             // --- Seed initial data for User ---
-            builder.HasData(
-                new User
-                {
-                    Id = 1,
-                    UserName = "alice_student",
-                    Email = "alice@example.com",
-                    UserRole = UserEnum.Student,
-                    
-                    
-                    Password = BCrypt.Net.BCrypt.HashPassword("Password123!"),
-                    EmailVerified = true,
-                    Status = AccountStatus.Active,
-                    CreatedAt = DateTime.UtcNow,
-                    LastUpdatedAt = DateTime.UtcNow,
-                    ProfileCompleted = true
-                },
-                new User
-                {
-                    Id = 2,
-                    UserName = "bob_reviewer",
-                    Email = "bob@example.com",
-                    UserRole = UserEnum.Reviewer,
-                  
-                    // Marks = 0, // Removed from User entity
-                    Password = BCrypt.Net.BCrypt.HashPassword("ReviewerPass!"),
-                    EmailVerified = true,
-                    Status = AccountStatus.Active,
-                    CreatedAt = DateTime.UtcNow,
-                    LastUpdatedAt = DateTime.UtcNow,
-                    ProfileCompleted = true
-                },
-                new User
-                {
-                    Id = 3,
-                    UserName = "charlie_admin",
-                    Email = "charlie@example.com",
-                    UserRole = UserEnum.Admin,
-                   
-                    // Marks = 0, // Removed from User entity
-                    Password = BCrypt.Net.BCrypt.HashPassword("AdminPass!23"),
-                    EmailVerified = true,
-                    Status = AccountStatus.Active,
-                    CreatedAt = DateTime.UtcNow,
-                    LastUpdatedAt = DateTime.UtcNow,
-                    ProfileCompleted = true
-                }
-            );
+            
         }
     }
 }

@@ -5,13 +5,10 @@ using MentorAi_backd.Domain.Entities.Student;
 using MentorAi_backd.Domain.Entities.UserEntity;
 using MentorAi_backd.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Crypto.Generators;
 using MentorAi_backd.Services.Interfaces;
 using MentorAi_backd.Application.Interfaces;
-using BCrypt.Net;
 using Microsoft.Extensions.Logging;
-using Refit;
-using Octokit.Internal;
+
 
 namespace MentorAi_backd.Repositories.Implementations
 {
@@ -27,14 +24,14 @@ namespace MentorAi_backd.Repositories.Implementations
         public AuthService(IGeneric<User> userRepository,
             IGeneric<StudentProfile> studentProfileRepo,
             IGeneric<ReviewerProfile> reviwerRepo,  
-            ITokenService tokenRepo, ILogger<AuthService> logger,IMapper _mapper)
+            ITokenService tokenRepo, ILogger<AuthService> logger,IMapper mapper)
         {
             _reviwerRepo = reviwerRepo;
             _userRepo = userRepository;
             _studentProfileRepo = studentProfileRepo;
             _TokenRepo = tokenRepo;
             _logger = logger;
-            _mapper = _mapper;
+            _mapper = mapper;
         }
         public async Task<ApiResponse<RegisterResponseDto>> RegisterAsync(RegisterDto registerDto)
         {
@@ -161,6 +158,19 @@ namespace MentorAi_backd.Repositories.Implementations
                 loginResponse, "Login successful. Welcome back!");
         }
 
+        public async Task<ApiResponse<string>> LogoutAsync(int userId)
+        {
+            var user = await _userRepo.Query().FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null)
+            {
+                throw new UnauthorizedException("Invalid refresh token.");
+            }
+            user.RefreshToken = null;
+            user.RefreshTokenExpiryTime = null;
+            await _userRepo.UpdateAsync(user);
+            _logger.LogInformation($"User {user.UserName} logged out successfully.");
+            return ApiResponse<string>.SuccessResponse("Logout successful.", "You have been logged out successfully.");
+        }
         public async Task<ApiResponse<string>> VerifyEmailAsync(Guid token)
         {
             var user = await _userRepo.Query().FirstOrDefaultAsync(u => u.VerificationToken == token);

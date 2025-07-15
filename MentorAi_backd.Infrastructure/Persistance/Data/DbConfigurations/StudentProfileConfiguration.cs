@@ -13,9 +13,7 @@ namespace MentorAi_backd.Infrastructure.Persistance.Data.DbConfigurations
         {
             builder.HasKey(sp => sp.UserId); // UserId is primary key for 1-to-1
 
-            builder.Property(sp => sp.Id)
-                    
-                    .ValueGeneratedNever(); // Id is not auto-generated, it comes from UserId
+           
 
             builder.HasOne(sp => sp.User)
                     .WithOne(u => u.StudentProfile)
@@ -39,20 +37,7 @@ namespace MentorAi_backd.Infrastructure.Persistance.Data.DbConfigurations
                     .HasForeignKey(ub => ub.StudentProfileId);
 
             // Seed data for Alice's StudentProfile
-            builder.HasData(
-                new StudentProfile
-                {
-                    // CORRECTED: Id should match UserId for 1-to-1 PK/FK
-                    Id = 1,
-                    UserId = 1,
-                    Age = 22,
-                    AssessmentScore = 80,
-                    CurrentLearningGoal = "Master Algorithms",
-                    PreferredLearningStyle = "Visual",
-                    CreatedAt = DateTime.UtcNow,
-                    LastUpdatedAt = DateTime.UtcNow
-                }
-            );
+            
         }
     }
 }

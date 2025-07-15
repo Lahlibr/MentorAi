@@ -32,25 +32,7 @@ namespace MentorAi_backd.Infrastructure.Persistance.Data.DbConfigurations
                    .HasMaxLength(50); // Example max length for availability string
 
             // Seed data for Bob the Reviewer
-            builder.HasData(
-                new ReviewerProfile
-                {
-                    // CORRECTED: Id should match UserId for 1-to-1 PK/FK
-                    Id = 2,
-                    // CORRECTED: UserId should be 2 for Bob the reviewer
-                    UserId = 2,
-                    Bio = "Experienced .NET developer with a passion for clean code and mentorship.",
-                    // CORRECTED: ExpertiseAreasJson must be a valid JSON array string
-                    ExpertiseAreasJson = "[\"C#\", \".NET Core\", \"ASP.NET\", \"SQL Server\", \"Azure\"]",
-                    YearsOfExperience = 5,
-                    Availability = "Weekdays",
-                    AverageRating = 4.5,
-                    ReviewsCompleted = 50,
-                    IsAvailableForReviews = true,
-                    CreatedAt = DateTime.UtcNow,
-                    LastUpdatedAt = DateTime.UtcNow
-                }
-            );
+            
         }
     }
 }

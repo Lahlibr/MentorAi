@@ -14,5 +14,11 @@
         public string? LastActiveModuleTitle { get; set; }
         public DateTime? LastActivityDate { get; set; } 
         public int CertificationsEarnedCount { get; set; }
+        public string? Status { get; set; } 
+        public bool IsEmailVerified { get; set; }
+        public double? AssessmentScore { get; set; }
+        public string? CurrentLearningGoal { get; set; }
+        public string? PreferredLearningStyle { get; set; }
+
     }
 }

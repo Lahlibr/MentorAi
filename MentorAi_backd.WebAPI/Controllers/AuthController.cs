@@ -1,7 +1,9 @@
 ﻿using MentorAi_backd.Application.DTOs.AuthDto;
 using MentorAi_backd.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace MentorAi_backd.Controllers
 {
@@ -38,6 +40,20 @@ namespace MentorAi_backd.Controllers
         public async Task<IActionResult> ResendVerification([FromBody] string email)
         {
             var result = await _authService.ResendVerificationEmailAsync(email);
+            return Ok(result);
+        }
+        [HttpPost("logout")]
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return Unauthorized("User not authenticated.");
+            }
+
+
+            var result = await _authService.LogoutAsync(userId);
             return Ok(result);
         }
     }

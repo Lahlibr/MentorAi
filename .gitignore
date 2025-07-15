@@ -1,28 +1,79 @@
-# Ignore build and publish folders
-bin/
-obj/
+## .NET build folders
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+artifacts/
+bld/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+project.lock.json
+project.fragment.lock.json
 
-# Ignore user-specific files
+## Visual Studio temporary files
+.vs/
+.vscode/
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
 
-# Ignore IDE-specific folders
-.vs/
-.idea/
-.vscode/
+## ASP.NET scaffolding
+ScaffoldingReadMe.txt
 
-# Ignore logs and cache
+## Resharper files
+_ReSharper*/
+*.DotSettings.user
+
+## Test & coverage results
+[Tt]est[Rr]esult*/
+*.trx
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+*.coverage
+*.coveragexml
 *.log
+*.binlog
+CodeCoverage/
+
+## NuGet packages
+*.nupkg
+*.snupkg
+packages/
+# Uncomment if using package caching in repo
+# packages/*/
+# !packages/build/
+
+## Rider IDE
+.idea/
+
+## VS Code settings
+.history/
+*.code-workspace
+
+## Temporary files
+~$*
+*~
 *.tmp
-*.cache
+*.bak
 
-# Ignore generated files
-*.dbmdl
-*.dbml
-*.sdf
+## SQLite / Local DBs (optional)
+*.db
+*.mdf
+*.ldf
 
-# Ignore any secrets/configs you shouldn't commit
-secrets.json
-appsettings.*.json
+## Dotnet CLI
+project.assets.json
+
+## Docker
+docker-compose.override.yml
+.env
+
+## macOS metadata
+.DS_Store
+
+## Windows thumbnail database
+Thumbs.db

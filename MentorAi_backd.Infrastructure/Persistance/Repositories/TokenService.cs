@@ -21,10 +21,10 @@ namespace MentorAi_backd.Repositories.Implementations
         {
             var claims = new List<Claim> 
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name,user.UserName),
-                new Claim(ClaimTypes.Email,user.Email),
-                new Claim(ClaimTypes.Role,user.UserRole.ToString())
+                new Claim("UserId", user.Id.ToString()),
+                new Claim("UserName",user.UserName),
+                new Claim("Email",user.Email),
+                new Claim("Role",user.UserRole.ToString())
             };
             //createing a security key from configuration secret
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtSettings:Key"]));

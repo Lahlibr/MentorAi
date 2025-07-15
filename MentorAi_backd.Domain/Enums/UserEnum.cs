@@ -5,6 +5,6 @@ namespace MentorAi_backd.Domain.Enums
     {
         Student,
         Reviewer,
-        Admin
+        Admin // remove 
     }
 }

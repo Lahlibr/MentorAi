@@ -1,13 +1,16 @@
 ﻿using MentorAi_backd.Domain.Entities.Main;
 using MentorAi_backd.Domain.Entities.UserEntity;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace MentorAi_backd.Domain.Entities.Student
 {
     public class StudentProfile : BaseEntity
     {
-        public int Id { get; set; }
+        [Key]
         public int UserId { get; set; }
+        [ForeignKey(nameof(UserId))]
         public User User { get; set; } = default!;
         public int? Age { get; set; } 
         public int? AssessmentScore { get; set; }
