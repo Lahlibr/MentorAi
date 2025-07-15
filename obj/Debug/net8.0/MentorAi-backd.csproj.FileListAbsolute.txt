@@ -178,4 +178,3 @@ C:\Users\mshah\MentorAi\MentorAi-backd\bin\Debug\net8.0\runtimes\win-x64\native\
 C:\Users\mshah\MentorAi\MentorAi-backd\bin\Debug\net8.0\runtimes\win-x86\native\git2-3f4182d.dll
 C:\Users\mshah\MentorAi\MentorAi-backd\bin\Debug\net8.0\AutoMapper.dll
 C:\Users\mshah\MentorAi\MentorAi-backd\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
-C:\Users\mshah\MentorAi\MentorAi-backd\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

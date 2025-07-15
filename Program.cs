@@ -4,6 +4,7 @@ using MentorAi_backd.Middleware;
 using MentorAi_backd.Repositories.Implementations;
 using MentorAi_backd.Repositories.Interfaces;
 using MentorAi_backd.Services;
+using MentorAi_backd.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
