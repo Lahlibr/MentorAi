@@ -21,23 +21,26 @@ namespace MentorAi_backd.Repositories.Implementations
         {
             var claims = new List<Claim> 
             {
-                new Claim("UserId", user.Id.ToString()),
-                new Claim("UserName",user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.UserData ,user.UserName),
                 new Claim("Email",user.Email),
-                new Claim("Role",user.UserRole.ToString())
+                new Claim(ClaimTypes.Role,user.UserRole.ToString())
             };
             //createing a security key from configuration secret
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtSettings:Key"]));
             //create signing Credinntials using the key and HMAC-SHA256 algorithm
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var token = new  JwtSecurityToken(
+            var expiresInMinutes = 60; 
+            int.TryParse(_config["JwtSettings:ExpiresInMinutes"], out expiresInMinutes);
+
+            var token = new JwtSecurityToken(
                 issuer: _config["JwtSettings:Issuer"],
                 audience: _config["JwtSettings:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(Convert.ToDouble(_config["JwtSettings:ExpiresInMinutes"])
-                ),
+                expires: DateTime.UtcNow.AddMinutes(expiresInMinutes),
                 signingCredentials: creds);
+
             return new JwtSecurityTokenHandler().WriteToken(token);
 
         }

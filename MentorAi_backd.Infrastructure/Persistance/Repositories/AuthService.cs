@@ -35,10 +35,7 @@ namespace MentorAi_backd.Repositories.Implementations
         }
         public async Task<ApiResponse<RegisterResponseDto>> RegisterAsync(RegisterDto registerDto)
         {
-            if (await _userRepo.Query().AnyAsync(u => u.UserName == registerDto.UserName))
-            {
-                throw new ConflictException("User with this Username already exists");
-            }
+           
             if (await _userRepo.Query().AnyAsync(u => u.Email == registerDto.Email))
             {
                 throw new ConflictException("User with this Email already exists");
@@ -158,19 +155,40 @@ namespace MentorAi_backd.Repositories.Implementations
                 loginResponse, "Login successful. Welcome back!");
         }
 
-        public async Task<ApiResponse<string>> LogoutAsync(int userId)
+        public async Task<ApiResponse<string>> LogoutAsync(int userId, string refreshToken)
         {
-            var user = await _userRepo.Query().FirstOrDefaultAsync(u => u.Id == userId);
-            if (user == null)
+            var result = await RevokeTokenAsync(userId, refreshToken);
+
+            if (!result.Data)
             {
-                throw new UnauthorizedException("Invalid refresh token.");
+                throw new UnauthorizedException("Invalid or expired refresh token.");
             }
-            user.RefreshToken = null;
-            user.RefreshTokenExpiryTime = null;
-            await _userRepo.UpdateAsync(user);
-            _logger.LogInformation($"User {user.UserName} logged out successfully.");
+
             return ApiResponse<string>.SuccessResponse("Logout successful.", "You have been logged out successfully.");
         }
+
+        public async Task<ApiResponse<bool>> RevokeTokenAsync(int userId, string refreshToken)
+        {
+            var user = await _userRepo.Query().FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                throw new UnauthorizedException("User not found.");
+
+            // Ensure token is present and valid
+            if (string.IsNullOrEmpty(user.RefreshToken) || !BCrypt.Net.BCrypt.Verify(refreshToken, user.RefreshToken))
+                throw new UnauthorizedException("Invalid refresh token.");
+
+            user.RefreshToken = null;
+            user.RefreshTokenExpiryTime = null;
+            user.LastLogout = DateTime.UtcNow;
+
+            await _userRepo.UpdateAsync(user);
+
+            _logger.LogInformation($"User {user.UserName} logged out successfully.");
+
+            return ApiResponse<bool>.SuccessResponse(true, "Token revoked successfully.");
+        }
+
         public async Task<ApiResponse<string>> VerifyEmailAsync(Guid token)
         {
             var user = await _userRepo.Query().FirstOrDefaultAsync(u => u.VerificationToken == token);
