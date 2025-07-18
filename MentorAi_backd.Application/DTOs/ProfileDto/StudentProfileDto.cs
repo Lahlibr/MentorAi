@@ -3,7 +3,11 @@
     public class StudentProfileDto : BaseUserProfileDto
     {
         
-        public int Age { get; set; }
+        public int? Age { get; set; }
+        public string Graduation { get; set; }
+        public int GraduationYear { get; set; }
+        public string? University { get; set; }
+        public string? Major { get; set; }
         public int OverallMarks { get; set; } 
         public int ProblemsSolvedCount { get; set; } 
         public int TotalChallengesAttempted { get; set; }
@@ -18,7 +22,12 @@
         public bool IsEmailVerified { get; set; }
         public double? AssessmentScore { get; set; }
         public string? CurrentLearningGoal { get; set; }
-        public string? PreferredLearningStyle { get; set; }
+   
+        public int BadgesEarnedCount { get; set; }
 
+        public string GuardianName { get; set; }
+        public string? GuardianEmail { get; set; }
+        public string GuardianPhoneNumber { get; set; }
+        public string GuardianRelationship { get; set; }
     }
 }

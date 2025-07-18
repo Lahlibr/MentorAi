@@ -83,18 +83,18 @@ builder.Services.AddAuthentication(options =>
                 }
 
                 // Optional: enforce post-logout token invalidation
-                if (user.LastLogout.HasValue)
-                {
-                    var tokenIssuedAt = context.SecurityToken.ValidFrom.ToUniversalTime();
-                    var lastLogout = user.LastLogout.Value.ToUniversalTime();
+                //if (user.LastLogout.HasValue)
+                //{
+                //    var tokenIssuedAt = context.SecurityToken.ValidFrom.ToUniversalTime();
+                //    var lastLogout = user.LastLogout.Value.ToUniversalTime();
 
-                    if (tokenIssuedAt < lastLogout)
-                    {
-                        Console.WriteLine($"Token validation failed: Token issued at {tokenIssuedAt} before last logout {lastLogout}.");
-                        context.Fail("Token was issued before the user logged out.");
-                        return;
-                    }
-                }
+                //    if (tokenIssuedAt < lastLogout)
+                //    {
+                //        Console.WriteLine($"Token validation failed: Token issued at {tokenIssuedAt} before last logout {lastLogout}.");
+                //        context.Fail("Token was issued before the user logged out.");
+                //        return;
+                //    }
+                //}
 
 
                 Console.WriteLine($"Token validated successfully for user ID {userId}.");
@@ -215,6 +215,10 @@ if (app.Environment.IsDevelopment())
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "MentorAI API v1");
         c.RoutePrefix = string.Empty; // Swagger UI at root
+        c.ConfigObject.AdditionalItems["syntaxHighlight"] = new Dictionary<string, object>
+        {
+            ["activated"] = false
+        };
     });
 }
 

@@ -4,6 +4,7 @@ using MentorAi_backd.Infrastructure.Persistance.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MentorAi_backd.Infrastructure.Migrations
 {
     [DbContext(typeof(MentorAiDbContext))]
-    partial class MentorAiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250718102408_StudentProfileupdates")]
+    partial class StudentProfileupdates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,7 +149,7 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Age")
+                    b.Property<int?>("Age")
                         .HasColumnType("int");
 
                     b.Property<int?>("AssessmentScore")
@@ -161,11 +164,11 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Graduation")
+                    b.Property<string>("Gratuation")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("GraduationYear")
+                    b.Property<int>("GratuationYear")
                         .HasColumnType("int");
 
                     b.Property<string>("GuardianEmail")

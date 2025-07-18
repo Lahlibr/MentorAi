@@ -4,6 +4,7 @@ using MentorAi_backd.Infrastructure.Persistance.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MentorAi_backd.Infrastructure.Migrations
 {
     [DbContext(typeof(MentorAiDbContext))]
-    partial class MentorAiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250717164818_studentprofile")]
+    partial class studentprofile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,7 +149,7 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Age")
+                    b.Property<int?>("Age")
                         .HasColumnType("int");
 
                     b.Property<int?>("AssessmentScore")
@@ -161,29 +164,6 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Graduation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("GraduationYear")
-                        .HasColumnType("int");
-
-                    b.Property<string>("GuardianEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GuardianName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GuardianPhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GuardianRelationship")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -196,13 +176,7 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Property<string>("LastUpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Major")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PreferredLearningStyle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("University")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");

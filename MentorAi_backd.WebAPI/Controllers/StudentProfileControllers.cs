@@ -1,4 +1,5 @@
-﻿using MentorAi_backd.Application.DTOs.ProfileDto;
+﻿using MentorAi_backd.Application.Common.Exceptions;
+using MentorAi_backd.Application.DTOs.ProfileDto;
 using MentorAi_backd.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,60 @@ namespace MentorAi_backd.WebAPI.Controllers
 
             var response = await _studentProfileService.GetStudentProfileAsync(userId);
             return Ok(response);
+        }
+        [HttpPut("Update")]
+        public async Task<ActionResult<ApiResponse<StudentProfileDto>>> UpdateStudentProfileAsync(
+    [FromBody] StudentUpdateDto updateDto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    var errors = ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToList();
+
+                    return BadRequest(ApiResponse<StudentProfileDto>.ErrorResponse(
+                        "Validation failed",
+                        errors,
+                        400));
+                }
+
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+                {
+                    return Unauthorized(ApiResponse<StudentProfileDto>.ErrorResponse(
+                        "User not authenticated",
+                        null,
+                        401));
+                }
+
+                var response = await _studentProfileService.UpdateStudentProfileAsync(userId, updateDto);
+                return Ok(response);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ApiResponse<StudentProfileDto>.ErrorResponse(
+                    ex.Message,
+                    null,
+                    404));
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ApiResponse<StudentProfileDto>.ErrorResponse(
+                    ex.Message,
+                    null,
+                    400));
+            }
+            catch (Exception ex)
+            {
+                // Log the exception here
+                return StatusCode(500, ApiResponse<StudentProfileDto>.ErrorResponse(
+                    "An error occurred while updating the profile",
+                    null,
+                    500));
+            }
         }
 
 

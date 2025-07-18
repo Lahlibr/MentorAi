@@ -10,5 +10,6 @@ namespace MentorAi_backd.Application.Interfaces
     public interface IStudentProfileService
     {
         Task<ApiResponse<StudentProfileDto>> GetStudentProfileAsync(int userId);
+        Task<ApiResponse<StudentProfileDto>> UpdateStudentProfileAsync(int userId, StudentUpdateDto studentProfileDto);
     }
 }
