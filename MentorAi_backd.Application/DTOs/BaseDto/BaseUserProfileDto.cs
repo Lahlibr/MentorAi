@@ -1,6 +1,6 @@
 ﻿using MentorAi_backd.Domain.Enums;
 
-namespace MentorAi_backd.Application.DTOs.ProfileDto
+namespace MentorAi_backd.Application.DTOs.BaseDto
 {
     public abstract class BaseUserProfileDto
     {

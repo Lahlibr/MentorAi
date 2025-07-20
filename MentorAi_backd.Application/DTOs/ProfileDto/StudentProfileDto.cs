@@ -1,4 +1,6 @@
-﻿namespace MentorAi_backd.Application.DTOs.ProfileDto
+﻿using MentorAi_backd.Application.DTOs.BaseDto;
+
+namespace MentorAi_backd.Application.DTOs.ProfileDto
 {
     public class StudentProfileDto : BaseUserProfileDto
     {

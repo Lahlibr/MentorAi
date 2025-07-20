@@ -56,35 +56,30 @@ namespace MentorAi_backd.Repositories.Implementations
 
            
                 await _userRepo.AddAsync(newUser);
-                if (newUser.UserRole == UserEnum.Student)
-                {
+                
+                _logger.LogInformation($"User {newUser.UserName} registered with role {newUser.UserRole}.");
+
+                if(newUser.UserRole == UserEnum.Student)
+        {
                     var studentProfile = new StudentProfile
                     {
                         UserId = newUser.Id,
-                        Age = 0,
-                        AssessmentScore = 0,
-                        CurrentLearningGoal = "Not set",
-                        PreferredLearningStyle = "Not set"
+                        // Add default values if needed
                     };
                     await _studentProfileRepo.AddAsync(studentProfile);
-                }else if (newUser.UserRole == UserEnum.Reviewer)
-                {
-                    var reviewerProfile = new ReviewerProfile
-                    {
-                        UserId = newUser.Id,
-                        Bio = "Not set",
-                        YearsOfExperience = 0,
-                        Availability = "Full-time",
-                        ExpertiseAreasJson = "[]",
-                        AverageRating = 0.0,
-                        ReviewsCompleted = 0,
-                        IsAvailableForReviews = true
-                    };
-                    await _reviwerRepo.AddAsync(reviewerProfile);
+                    _logger.LogInformation($"Student profile created for user {newUser.Id}");
                 }
-                _logger.LogInformation($"User {newUser.UserName} registered with role {newUser.UserRole}.");
-
-                var response = _mapper.Map<RegisterResponseDto>(newUser);
+                else if (newUser.UserRole == UserEnum.Reviewer)
+                        {
+                            var reviewerProfile = new ReviewerProfile
+                            {
+                                UserId = newUser.Id,
+                                // Add default values if needed
+                            };
+                            await _reviwerRepo.AddAsync(reviewerProfile);
+                            _logger.LogInformation($"Reviewer profile created for user {newUser.Id}");
+                        }
+            var response = _mapper.Map<RegisterResponseDto>(newUser);
                 response.Message = "Registration successful. Please check your email for verification link.";
 
                 return ApiResponse<RegisterResponseDto>.SuccessResponse(response, response.Message);
@@ -134,12 +129,22 @@ namespace MentorAi_backd.Repositories.Implementations
             user.FailedLoginAttempts = 0;
             user.LastSuccessfulLogin = DateTime.UtcNow;
 
-            var accessToken = _TokenRepo.GenerateAccessToken(user);
+            var accessToken = await _TokenRepo.GenerateAccessToken(user);
             var refreshToken = _TokenRepo.GenerateRefreshToken();
             
             user.RefreshToken = BCrypt.Net.BCrypt.HashPassword(refreshToken);
             user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
-            
+
+            bool isProfileComplete = true;
+            if (user.UserRole == UserEnum.Student)
+            {
+                isProfileComplete = await _studentProfileRepo.Query().AnyAsync(p => p.UserId == user.Id);
+            }
+            else if (user.UserRole == UserEnum.Reviewer)
+            {
+                isProfileComplete = await _reviwerRepo.Query().AnyAsync(p => p.UserId == user.Id);
+            }
+
             await _userRepo.UpdateAsync(user);
             
             var loginResponse = new LoginResponseDto
@@ -149,7 +154,8 @@ namespace MentorAi_backd.Repositories.Implementations
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
                 UserRole = user.UserRole.ToString(),
-                ProfileImageUrl = user.ProfileImageUrl
+                ProfileImageUrl = user.ProfileImageUrl,
+                isProfileComplete = isProfileComplete
             };
             return ApiResponse<LoginResponseDto>.SuccessResponse(
                 loginResponse, "Login successful. Welcome back!");

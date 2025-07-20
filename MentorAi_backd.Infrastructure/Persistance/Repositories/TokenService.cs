@@ -1,37 +1,53 @@
-﻿using MentorAi_backd.Domain.Entities.UserEntity;
+﻿using AutoMapper.Configuration;
 using MentorAi_backd.Application.Interfaces;
+using MentorAi_backd.Domain.Entities.UserEntity;
+using MentorAi_backd.Domain.Enums;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using AutoMapper.Configuration;
-using Microsoft.Extensions.Configuration;
 
 namespace MentorAi_backd.Repositories.Implementations
 {
     public class TokenService : ITokenService
     {
         private readonly IConfiguration _config;
-        public  TokenService (IConfiguration config)
+        private readonly IGeneric<ReviewerProfile> _reviewerRepo;
+        public  TokenService (IConfiguration config,IGeneric<ReviewerProfile> reviewerRepo)
         {
             _config = config;
+            _reviewerRepo = reviewerRepo;
+
         }
-        public string GenerateAccessToken(User user)
+        public async Task<string> GenerateAccessToken(User user)
         {
-            var claims = new List<Claim> 
+            var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+        new Claim(ClaimTypes.UserData, user.UserName),
+        new Claim("Email", user.Email),
+        new Claim(ClaimTypes.Role, user.UserRole.ToString()),
+    };
+
+            // Add ReviewerId only if user is a Reviewer
+            if (user.UserRole == UserEnum.Reviewer)
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.UserData ,user.UserName),
-                new Claim("Email",user.Email),
-                new Claim(ClaimTypes.Role,user.UserRole.ToString())
-            };
-            //createing a security key from configuration secret
+                var reviewerProfile = await _reviewerRepo.Query()
+                    .FirstOrDefaultAsync(r => r.UserId == user.Id);
+
+                if (reviewerProfile != null)
+                {
+                    claims.Add(new Claim("ReviewerId", reviewerProfile.Id.ToString()));
+                }
+            }
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtSettings:Key"]));
-            //create signing Credinntials using the key and HMAC-SHA256 algorithm
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var expiresInMinutes = 60; 
+            var expiresInMinutes = 60;
             int.TryParse(_config["JwtSettings:ExpiresInMinutes"], out expiresInMinutes);
 
             var token = new JwtSecurityToken(
@@ -42,8 +58,8 @@ namespace MentorAi_backd.Repositories.Implementations
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-
         }
+
         public string GenerateRefreshToken()
         {
             var randomBytes = new byte[64];

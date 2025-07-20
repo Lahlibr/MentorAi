@@ -9,6 +9,8 @@
         public string RefreshToken { get; set; }
         public string UserRole { get; set; }
         public string? ProfileImageUrl { get; set; }
+        
+        public bool isProfileComplete { get; set; } = false;
     }
 }
 

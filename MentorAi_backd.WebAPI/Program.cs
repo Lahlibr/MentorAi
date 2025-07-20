@@ -133,6 +133,7 @@ builder.Services.AddCors(options =>
 // ---------------------------
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IStudentProfileService, StudentProfileService>();
+builder.Services.AddScoped<IReviwerService, ReviewerService>();
 
 
 builder.Services.AddScoped<ITokenService, TokenService>();

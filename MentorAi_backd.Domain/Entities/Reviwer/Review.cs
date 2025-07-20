@@ -1,8 +1,9 @@
 ﻿using MentorAi_backd.Domain.Entities.Main;
 using MentorAi_backd.Domain.Entities.Student;
+using MentorAi_backd.Domain.Entities.UserEntity;
 using MentorAi_backd.Domain.Enums;
 
-namespace MentorAi_backd.Domain.Entities.UserEntity
+namespace MentorAi_backd.Domain.Entities.Reviwer
 {
     public class Review : BaseEntity
     {

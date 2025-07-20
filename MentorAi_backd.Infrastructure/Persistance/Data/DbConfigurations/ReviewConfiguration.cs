@@ -1,4 +1,4 @@
-﻿using MentorAi_backd.Domain.Entities.UserEntity;
+﻿using MentorAi_backd.Domain.Entities.Reviwer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

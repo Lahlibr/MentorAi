@@ -28,10 +28,7 @@ namespace MentorAi_backd.Infrastructure.Persistance.Data.DbConfigurations
             builder.Property(rp => rp.ExpertiseAreasJson)
                     .IsRequired(); // Ensure this is stored, even if empty array JSON
 
-            builder.Property(rp => rp.Availability)
-                   .HasMaxLength(50); // Example max length for availability string
-
-            // Seed data for Bob the Reviewer
+           
             
         }
     }
