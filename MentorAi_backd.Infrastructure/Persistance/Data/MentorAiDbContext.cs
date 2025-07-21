@@ -1,5 +1,6 @@
 ﻿// MentorAi_backd.Infrastructure/Persistence.Data/MentorAiDbContext.cs
 using MentorAi_backd.Domain.Entities.Main;
+using MentorAi_backd.Domain.Entities.Reviewer;
 using MentorAi_backd.Domain.Entities.Reviwer;
 using MentorAi_backd.Domain.Entities.Student;
 using MentorAi_backd.Domain.Entities.UserEntity;
@@ -18,6 +19,8 @@ namespace MentorAi_backd.Infrastructure.Persistance.Data
         public DbSet<User> Users { get; set; } = default!;
         public DbSet<StudentProfile> StudentProfiles { get; set; } = default!;
         public DbSet<ReviewerProfile> ReviewerProfiles { get; set; } = default!;
+        public DbSet<ReviewerAvailability> ReviewerAvailabilities { get; set; } = default!;
+
         public DbSet<Modules> Modules { get; set; } = default!; // Simplified DbSet declaration
         public DbSet<Roadmap> Roadmaps { get; set; } = default!;
         public DbSet<StudentRoadmapProgress> StudentRoadmapProgresses { get; set; } = default!;

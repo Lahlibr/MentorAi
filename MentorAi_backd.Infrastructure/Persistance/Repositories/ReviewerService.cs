@@ -16,17 +16,17 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
 {
     public class ReviewerService : IReviwerService
     {
-        private readonly  IGeneric<ReviewerProfile> _Reviwer;
+        private readonly  IGeneric<ReviewerProfile> _reviewer;
         private readonly IGeneric<User> _userRepo;
         private readonly IMapper _mapper;
         private readonly ILogger<ReviewerService> _logger;
 
-        public ReviewerService(IGeneric<ReviewerProfile> reviwer,
+        public ReviewerService(IGeneric<ReviewerProfile> reviewer,
             IGeneric<User> userRepo,
             IMapper mapper,
             ILogger<ReviewerService> logger)
         {
-            _Reviwer = reviwer;
+            _reviewer = reviewer;
             _userRepo = userRepo;
             _mapper = mapper;
             _logger = logger;
@@ -50,6 +50,14 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
                 throw;
             }
 
+        }
+        public async Task<ApiResponse<ReviewerProfileDto>> UpdateReviwerProfile(int userId , ReviewerProfileDto reviewer)
+        {
+            try
+            {
+                if(update)
+                    
+            }
         }
     }
 }

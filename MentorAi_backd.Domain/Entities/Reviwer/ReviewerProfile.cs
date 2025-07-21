@@ -1,4 +1,5 @@
 ﻿using MentorAi_backd.Domain.Entities.Main;
+using MentorAi_backd.Domain.Entities.Reviewer;
 
 namespace MentorAi_backd.Domain.Entities.UserEntity
 {
@@ -16,5 +17,8 @@ namespace MentorAi_backd.Domain.Entities.UserEntity
         public double AverageRating { get; set; } = 0.0; 
         public int ReviewsCompleted { get; set; } = 0; 
         public bool IsAvailableForReviews { get; set; } = true;
+
+        public ICollection<ReviewerAvailability> Availabilities { get; set; } = new List<ReviewerAvailability>();
+
     }
 }
