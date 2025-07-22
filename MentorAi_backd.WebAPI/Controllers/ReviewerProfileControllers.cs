@@ -18,7 +18,7 @@ namespace MentorAi_backd.WebAPI.Controllers
             _reviewerService = reviewerService;
         }
         [HttpGet("ReviwerProfile")]
-        [Authorize(Roles = "Reviewer")]
+        [Authorize(Roles = "Reviewer,Admin")]
         public async Task<ActionResult<ApiResponse<ReviewerProfileDto>>> GetReviwerProfile(int? id = null)
         {
             int reviewerIdToFetch;
@@ -50,7 +50,38 @@ namespace MentorAi_backd.WebAPI.Controllers
             return Ok(response);
         }
 
-        
+        [HttpPut("UpdateReviwerProfile")]
+        [Authorize(Roles = "Reviewer")]
+        public async Task<ActionResult<ApiResponse<ReviewerUpdateDto>>> UpdateReviwerProfile([FromBody] ReviewerUpdateDto updateDto)
+        {
+            if (updateDto == null)
+            {
+                return BadRequest(ApiResponse<ReviewerUpdateDto>.ErrorResponse("Reviewer profile data cannot be null.", 400).Message);
+            }
+            var reviewerIdClaim = User.FindFirstValue("ReviewerId");
+            if (string.IsNullOrEmpty(reviewerIdClaim) || !int.TryParse(reviewerIdClaim, out int reviewerId))
+            {
+                return Unauthorized(ApiResponse<ReviewerUpdateDto>.ErrorResponse("Reviewer ID claim not found or invalid.", 401).Message);
+            }
+            var response = await _reviewerService.UpdateReviwerProfile(reviewerId, updateDto);
+            if (!response.Success)
+            {
+                return StatusCode(response.StatusCode, response);
+            }
+            return Ok(response);
+        }
 
+        [HttpGet("GetAllReviewerProfile")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<ApiResponse<ReviewerProfileDto>>> GetReviewerProfile()
+        {
+            
+            var response = await _reviewerService.GetAllReviewersAsync();
+            if (!response.Success)
+            {
+                return StatusCode(response.StatusCode, response);
+            }
+            return Ok(response);
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace MentorAi_backd.Application.DTOs.ReviwerDto
     {
         public string PhoneNumber { get; set; }
 
-        public 
+        
         public string Qualification { get; set; }
 
         public string Bio {  get; set; } 

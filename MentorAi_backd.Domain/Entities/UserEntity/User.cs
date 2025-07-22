@@ -11,7 +11,6 @@ namespace MentorAi_backd.Domain.Entities.UserEntity
         public string UserName { get; set; }
         public string Email { get; set; }
         public UserEnum UserRole { get; set; } = UserEnum.Student;
-       
         public string Password { get; set; }
         public bool EmailVerified { get; set; } = false;
         public Guid? VerificationToken { get; set; }

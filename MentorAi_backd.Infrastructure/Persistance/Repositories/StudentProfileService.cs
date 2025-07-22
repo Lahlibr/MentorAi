@@ -123,13 +123,13 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
                     user.ProfileImageUrl = updateDto.ProfileImageUrl;
                 }
 
-                // Map ALL update DTO properties to student profile at once
+               
                 _mapper.Map(updateDto, user.StudentProfile);
 
-                // Single update operation for user
+             
                 await _userRepo.UpdateAsync(user);
 
-                // Verify changes
+             
                 var savedProfile = await _studentProfileRepo.GetByIdAsync(userId);
                 _logger.LogInformation("Saved profile: {@Profile}", savedProfile);
 

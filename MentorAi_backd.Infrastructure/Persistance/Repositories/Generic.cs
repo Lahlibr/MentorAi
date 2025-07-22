@@ -31,32 +31,25 @@ namespace MentorAi_backd.Repositories.Implementations
         public async Task AddAsync(TEntity entity)
         {
             await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
+           
         }
         public async Task AddRangeAsync(IEnumerable<TEntity> entities)
         {
             await _dbSet.AddRangeAsync(entities);
-            await _context.SaveChangesAsync();
+           
         }
-        public async Task UpdateAsync(TEntity entities)
+        public void UpdateAsync(TEntity entities)
         {
             _dbSet.Update(entities);
-             await _context.SaveChangesAsync();
+            
         }
-        public async Task DeleteAsync(int id)
-        {
-            var entity = await _dbSet.FindAsync(id);
-            if (entity != null)
-            {
-                _dbSet.Remove(entity);
-                await _context.SaveChangesAsync();
-            }
-        }
+        
         public void Delete(TEntity entity)
         {
             _dbSet.Remove(entity);
-            _context.SaveChangesAsync();
+           
         }
+
         // Used to build build advanced LINQ queries (.Include(), .OrderBy(), etc.) outside the repository.
         public IQueryable<TEntity> Query()
         {

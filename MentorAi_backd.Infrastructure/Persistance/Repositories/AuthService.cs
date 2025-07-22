@@ -71,11 +71,12 @@ namespace MentorAi_backd.Repositories.Implementations
                 }
                 else if (newUser.UserRole == UserEnum.Reviewer)
                         {
-                            var reviewerProfile = new ReviewerProfile
-                            {
-                                UserId = newUser.Id,
-                                // Add default values if needed
-                            };
+                var reviewerProfile = new ReviewerProfile
+                {
+                    UserId = newUser.Id,
+                    Status = ReviewerStatus.Pending
+                };
+                newUser.ReviewerProfile = reviewerProfile;
                             await _reviwerRepo.AddAsync(reviewerProfile);
                             _logger.LogInformation($"Reviewer profile created for user {newUser.Id}");
                         }

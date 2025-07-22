@@ -40,7 +40,7 @@ namespace MentorAi_backd.Repositories.Implementations
 
                 if (reviewerProfile != null)
                 {
-                    claims.Add(new Claim("ReviewerId", reviewerProfile.Id.ToString()));
+                    claims.Add(new Claim("ReviewerId", reviewerProfile.UserId.ToString()));
                 }
             }
 

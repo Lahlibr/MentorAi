@@ -12,15 +12,15 @@ namespace MentorAi_backd.Domain.Entities.Student
         public int UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public User User { get; set; } = default!;
-        public int Age { get; set; }
-        public string Graduation { get; set; }
-        public int GraduationYear { get; set; }
+        public int? Age { get; set; }
+        public string? Graduation { get; set; }
+        public int? GraduationYear { get; set; }
         public string? University { get; set; }
         public string? Major { get; set; }
-        public string GuardianName { get; set; }
+        public string? GuardianName { get; set; }
         public string? GuardianEmail { get; set; }
-        public string GuardianPhoneNumber { get; set; }
-        public string GuardianRelationship { get; set; }
+        public string? GuardianPhoneNumber { get; set; }
+        public string? GuardianRelationship { get; set; }
         public int? AssessmentScore { get; set; }
 
         public string? CurrentLearningGoal { get; set; }

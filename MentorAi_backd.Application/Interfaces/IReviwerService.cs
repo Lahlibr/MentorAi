@@ -11,5 +11,8 @@ namespace MentorAi_backd.Application.Interfaces
     {
         Task<ApiResponse<ReviewerProfileDto>> GetReviwerProfileAsync(int userId);
         // Add other methods as needed, e.g., UpdateReviewerProfileAsync, etc.
+        Task<ApiResponse<ReviewerUpdateDto>> UpdateReviwerProfile(int userId, ReviewerUpdateDto updateDto);
+
+        Task<ApiResponse<IEnumerable<ReviewerProfileDto>>> GetAllReviewersAsync();
     }
 }

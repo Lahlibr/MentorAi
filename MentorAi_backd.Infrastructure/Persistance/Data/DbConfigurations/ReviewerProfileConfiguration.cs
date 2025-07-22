@@ -13,9 +13,9 @@ namespace MentorAi_backd.Infrastructure.Persistance.Data.DbConfigurations
         {
             builder.HasKey(rp => rp.UserId); // UserId is primary key for 1-to-1
 
-            builder.Property(rp => rp.Id)
            
-                    .ValueGeneratedNever(); // Id is not auto-generated, it comes from UserId
+           
+                   
 
             builder.HasOne(rp => rp.User)
                     .WithOne(u => u.ReviewerProfile)
