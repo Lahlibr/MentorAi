@@ -5,6 +5,7 @@ using MentorAi_backd.Infrastructure.Persistance.Repositories;
 using MentorAi_backd.Middleware;
 using MentorAi_backd.Repositories.Implementations;
 using MentorAi_backd.Services.Interfaces;
+using MentorAi_backd.WebAPI.Controllers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -134,7 +135,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IStudentProfileService, StudentProfileService>();
 builder.Services.AddScoped<IReviwerService, ReviewerService>();
-
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped(typeof(IGeneric<>), typeof(Generic<>));

@@ -10,5 +10,6 @@ namespace MentorAi_backd.Application.Interfaces
     public interface IAdminService
     {
         Task<ApiResponse<IEnumerable<ReviewerAdminViewDto>>> GetPendingReviewersAsync();
+        Task DeleteUserAsync(int userId);
     }
 }

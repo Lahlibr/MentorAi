@@ -22,6 +22,7 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
         private readonly IGeneric<UserBadge> _userBadgeRepo;
         private readonly IMapper _mapper;
         private readonly ILogger<StudentProfileService> _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
         public StudentProfileService(
             IGeneric<StudentProfile> studentProfileRepo,
@@ -31,7 +32,8 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
             IGeneric<StudentCertification> studentCertificationRepo,
             IGeneric<UserBadge> userBadgeRepo,
             IMapper mapper,
-            ILogger<StudentProfileService> logger)
+            ILogger<StudentProfileService> logger,
+            IUnitOfWork unitOfWork)
         {
             _studentProfileRepo = studentProfileRepo;
             _userRepo = userRepo;
@@ -41,6 +43,7 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
             _userBadgeRepo = userBadgeRepo;
             _mapper = mapper;
             _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<ApiResponse<StudentProfileDto>> GetStudentProfileAsync(int userId)
@@ -127,9 +130,9 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
                 _mapper.Map(updateDto, user.StudentProfile);
 
              
-                await _userRepo.UpdateAsync(user);
+                _userRepo.UpdateAsync(user);
+                await _unitOfWork.SaveChangesAsync();
 
-             
                 var savedProfile = await _studentProfileRepo.GetByIdAsync(userId);
                 _logger.LogInformation("Saved profile: {@Profile}", savedProfile);
 

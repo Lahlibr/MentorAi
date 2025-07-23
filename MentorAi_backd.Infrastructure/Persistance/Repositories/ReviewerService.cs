@@ -7,11 +7,6 @@ using MentorAi_backd.Domain.Entities.UserEntity;
 using MentorAi_backd.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MentorAi_backd.Infrastructure.Persistance.Repositories
 {
@@ -21,16 +16,19 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
         private readonly IGeneric<User> _userRepo;
         private readonly IMapper _mapper;
         private readonly ILogger<ReviewerService> _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
         public ReviewerService(IGeneric<ReviewerProfile> reviewer,
             IGeneric<User> userRepo,
             IMapper mapper,
-            ILogger<ReviewerService> logger)
+            ILogger<ReviewerService> logger,
+            IUnitOfWork unitOfWork)
         {
             _reviewer = reviewer;
             _userRepo = userRepo;
             _mapper = mapper;
             _logger = logger;
+            _unitOfWork = unitOfWork;
         }
         public async Task<ApiResponse<ReviewerProfileDto>> GetReviwerProfileAsync(int userId)
         {
@@ -67,7 +65,8 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
                 if (user.ReviewerProfile == null)
                     throw new NotFoundException($"Reviewer profile for user ID {userId} not found.");
                 _mapper.Map(updateDto, user.ReviewerProfile);
-                await _userRepo.UpdateAsync(user);
+                _userRepo.UpdateAsync(user);
+                await _unitOfWork.SaveChangesAsync();
 
                 var savedProfile = await _reviewer.GetByIdAsync(userId);
                 _logger.LogInformation("Saved profile: {@Profile}", savedProfile);

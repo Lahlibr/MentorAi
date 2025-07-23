@@ -43,7 +43,12 @@ namespace MentorAi_backd.Repositories.Implementations
             _dbSet.Update(entities);
             
         }
-        
+        public void UpdateRange(IEnumerable<TEntity> entities)
+        {
+            _dbSet.UpdateRange(entities);
+
+        }
+
         public void Delete(TEntity entity)
         {
             _dbSet.Remove(entity);

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 
 using Microsoft.AspNetCore.Mvc;
+using Nest;
 
 namespace MentorAi_backd.WebAPI.Controllers
 {
@@ -11,12 +12,23 @@ namespace MentorAi_backd.WebAPI.Controllers
     public class AdminController : ControllerBase
     {
         private readonly IAdminService _adminService;
-    
-    [HttpGet("reviewers/pending")]
+        public AdminController(IAdminService adminService)
+        {
+            _adminService = adminService;
+        }
+
+        [HttpGet("reviewers/pending")]
         public async Task<IActionResult> GetPendingReviewers()
         {
             var response = await _adminService.GetPendingReviewersAsync();
             return Ok(response);
+        }
+    
+        [HttpDelete("users/{userId}")]
+        public async Task<IActionResult> DeleteUser(int userId)
+        {
+            await _adminService.DeleteUserAsync(userId);
+            return NoContent();
         }
     }
 }

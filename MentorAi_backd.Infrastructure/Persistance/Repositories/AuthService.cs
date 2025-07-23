@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using MentorAi_backd.Services.Interfaces;
 using MentorAi_backd.Application.Interfaces;
 using Microsoft.Extensions.Logging;
+using Org.BouncyCastle.Security;
 
 
 namespace MentorAi_backd.Repositories.Implementations
@@ -20,10 +21,12 @@ namespace MentorAi_backd.Repositories.Implementations
         private readonly ITokenService _TokenRepo;
         private readonly ILogger<AuthService> _logger;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public AuthService(IGeneric<User> userRepository,
             IGeneric<StudentProfile> studentProfileRepo,
             IGeneric<ReviewerProfile> reviwerRepo,  
+            IUnitOfWork unitOfWork,
             ITokenService tokenRepo, ILogger<AuthService> logger,IMapper mapper)
         {
             _reviwerRepo = reviwerRepo;
@@ -31,6 +34,7 @@ namespace MentorAi_backd.Repositories.Implementations
             _studentProfileRepo = studentProfileRepo;
             _TokenRepo = tokenRepo;
             _logger = logger;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
         public async Task<ApiResponse<RegisterResponseDto>> RegisterAsync(RegisterDto registerDto)
@@ -63,8 +67,8 @@ namespace MentorAi_backd.Repositories.Implementations
         {
                     var studentProfile = new StudentProfile
                     {
-                        UserId = newUser.Id,
-                        // Add default values if needed
+                        User = newUser,
+
                     };
                     await _studentProfileRepo.AddAsync(studentProfile);
                     _logger.LogInformation($"Student profile created for user {newUser.Id}");
@@ -73,13 +77,16 @@ namespace MentorAi_backd.Repositories.Implementations
                         {
                 var reviewerProfile = new ReviewerProfile
                 {
-                    UserId = newUser.Id,
+                    User = newUser,
                     Status = ReviewerStatus.Pending
                 };
                 newUser.ReviewerProfile = reviewerProfile;
                             await _reviwerRepo.AddAsync(reviewerProfile);
                             _logger.LogInformation($"Reviewer profile created for user {newUser.Id}");
                         }
+
+                await _unitOfWork.SaveChangesAsync();
+                _logger.LogInformation($"User {newUser.UserName} registered successfully with ID {newUser.Id}.");
             var response = _mapper.Map<RegisterResponseDto>(newUser);
                 response.Message = "Registration successful. Please check your email for verification link.";
 
@@ -99,7 +106,7 @@ namespace MentorAi_backd.Repositories.Implementations
                         user.LockoutEnd = DateTime.UtcNow.AddMinutes(15);
                         user.Status = AccountStatus.LockedOut;
                         _logger.LogWarning($"Account '{user.Email}' locked due to failed login attempts.");
-                    }await _userRepo.UpdateAsync(user);
+                    }_userRepo.UpdateAsync(user);
                 }
           
                 
@@ -146,8 +153,8 @@ namespace MentorAi_backd.Repositories.Implementations
                 isProfileComplete = await _reviwerRepo.Query().AnyAsync(p => p.UserId == user.Id);
             }
 
-            await _userRepo.UpdateAsync(user);
-            
+            _userRepo.UpdateAsync(user);
+            await _unitOfWork.SaveChangesAsync();
             var loginResponse = new LoginResponseDto
             {
                 UserName = user.UserName,
@@ -189,7 +196,8 @@ namespace MentorAi_backd.Repositories.Implementations
             user.RefreshTokenExpiryTime = null;
             user.LastLogout = DateTime.UtcNow;
 
-            await _userRepo.UpdateAsync(user);
+            _userRepo.UpdateAsync(user);
+            await _unitOfWork.SaveChangesAsync();
 
             _logger.LogInformation($"User {user.UserName} logged out successfully.");
 
@@ -216,7 +224,8 @@ namespace MentorAi_backd.Repositories.Implementations
             user.VerificationToken = null;
             user.VerificationTokenExpiry = null;
             user.Status = AccountStatus.Active;
-            await _userRepo.UpdateAsync(user);
+            _userRepo.UpdateAsync(user);
+            await _unitOfWork.SaveChangesAsync();
             return ApiResponse<string>.SuccessResponse("Email verified successfully.", "Your email has been verified.");
         }
 
@@ -233,9 +242,10 @@ namespace MentorAi_backd.Repositories.Implementations
             user.VerificationToken = Guid.NewGuid();
             user.VerificationTokenExpiry = DateTime.UtcNow.AddDays(1);
 
-            await _userRepo.UpdateAsync(user);
+            _userRepo.UpdateAsync(user);
+            await _unitOfWork.SaveChangesAsync();
 
-            // 🔔 Send verification email logic here (through a service)
+           
             _logger.LogInformation($"Resent verification token: {user.VerificationToken}");
 
             return ApiResponse<string>.SuccessResponse("Verification email resent.");
