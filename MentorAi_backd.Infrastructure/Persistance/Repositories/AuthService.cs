@@ -106,7 +106,7 @@ namespace MentorAi_backd.Repositories.Implementations
                         user.LockoutEnd = DateTime.UtcNow.AddMinutes(15);
                         user.Status = AccountStatus.LockedOut;
                         _logger.LogWarning($"Account '{user.Email}' locked due to failed login attempts.");
-                    }_userRepo.UpdateAsync(user);
+                    }await _userRepo.UpdateAsync(user);
                 }
           
                 
@@ -153,7 +153,7 @@ namespace MentorAi_backd.Repositories.Implementations
                 isProfileComplete = await _reviwerRepo.Query().AnyAsync(p => p.UserId == user.Id);
             }
 
-            _userRepo.UpdateAsync(user);
+            await _userRepo.UpdateAsync(user);
             await _unitOfWork.SaveChangesAsync();
             var loginResponse = new LoginResponseDto
             {
@@ -196,7 +196,7 @@ namespace MentorAi_backd.Repositories.Implementations
             user.RefreshTokenExpiryTime = null;
             user.LastLogout = DateTime.UtcNow;
 
-            _userRepo.UpdateAsync(user);
+            await _userRepo.UpdateAsync(user);
             await _unitOfWork.SaveChangesAsync();
 
             _logger.LogInformation($"User {user.UserName} logged out successfully.");
@@ -224,7 +224,7 @@ namespace MentorAi_backd.Repositories.Implementations
             user.VerificationToken = null;
             user.VerificationTokenExpiry = null;
             user.Status = AccountStatus.Active;
-            _userRepo.UpdateAsync(user);
+            await _userRepo.UpdateAsync(user);
             await _unitOfWork.SaveChangesAsync();
             return ApiResponse<string>.SuccessResponse("Email verified successfully.", "Your email has been verified.");
         }
@@ -242,7 +242,7 @@ namespace MentorAi_backd.Repositories.Implementations
             user.VerificationToken = Guid.NewGuid();
             user.VerificationTokenExpiry = DateTime.UtcNow.AddDays(1);
 
-            _userRepo.UpdateAsync(user);
+            await _userRepo.UpdateAsync(user);
             await _unitOfWork.SaveChangesAsync();
 
            

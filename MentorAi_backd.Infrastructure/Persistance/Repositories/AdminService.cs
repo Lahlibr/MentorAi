@@ -48,7 +48,7 @@ namespace MentorAi_backd.WebAPI.Controllers
             user.Email = $"{user.Email}_deleted_{DateTime.UtcNow:yyyyMMddHHmmss}";
             user.RefreshToken = null;
 
-            _userRepo.UpdateAsync(user);
+            await _userRepo.UpdateAsync(user);
 
             if (user.ReviewerProfile  != null)
             {

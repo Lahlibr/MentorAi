@@ -13,9 +13,11 @@ namespace MentorAi_backd.Domain.Entities.UserEntity
         public int TotalModules { get; set; } = 0;
         public int TotalChallenges { get; set; } = 0;
         public int TotalCertifications { get; set; } = 0;
-       
+        public int StudentId { get; set; }
+
         // Relationships
         public ICollection<Modules> Modules { get; set; } = new List<Modules>();
+        
 
     }
 }

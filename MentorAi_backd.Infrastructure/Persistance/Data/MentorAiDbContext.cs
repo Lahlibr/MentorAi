@@ -21,7 +21,7 @@ namespace MentorAi_backd.Infrastructure.Persistance.Data
         public DbSet<ReviewerProfile> ReviewerProfiles { get; set; } = default!;
         public DbSet<ReviewerAvailability> ReviewerAvailabilities { get; set; } = default!;
 
-        public DbSet<Modules> Modules { get; set; } = default!; // Simplified DbSet declaration
+        public DbSet<Modules> Modules { get; set; } = default!;
         public DbSet<Roadmap> Roadmaps { get; set; } = default!;
         public DbSet<StudentRoadmapProgress> StudentRoadmapProgresses { get; set; } = default!;
         public DbSet<Problem> Problems { get; set; } = default!;

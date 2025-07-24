@@ -10,10 +10,10 @@ namespace MentorAi_backd.Application.Interfaces
         Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
         Task AddAsync(TEntity entity);
         Task AddRangeAsync(IEnumerable<TEntity> entities);
-        void UpdateAsync(TEntity entities);
+        Task UpdateAsync(TEntity entities);
 
         //Update Range
-        void UpdateRange(IEnumerable<TEntity> entities);
+        Task UpdateRange(IEnumerable<TEntity> entities);
         void Delete(TEntity entity);
         IQueryable<TEntity> Query();
     }

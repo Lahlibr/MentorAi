@@ -38,14 +38,15 @@ namespace MentorAi_backd.Repositories.Implementations
             await _dbSet.AddRangeAsync(entities);
            
         }
-        public void UpdateAsync(TEntity entities)
+        public Task UpdateAsync(TEntity entity)
         {
-            _dbSet.Update(entities);
-            
+            _dbSet.Update(entity);
+            return Task.CompletedTask; 
         }
-        public void UpdateRange(IEnumerable<TEntity> entities)
+        public Task UpdateRange(IEnumerable<TEntity> entities)
         {
             _dbSet.UpdateRange(entities);
+            return Task.CompletedTask;
 
         }
 
