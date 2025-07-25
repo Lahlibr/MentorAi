@@ -21,7 +21,7 @@ namespace MentorAi_backd.Application.DTOs.ModulesDto
         [Required, StringLength(500)]
         public string ResourceIdentifier { get; set; } = default!;
 
-        public int Order { get; set; }
+       
         public string? Prerequisites { get; set; }
     }
 }

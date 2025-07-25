@@ -10,9 +10,9 @@ namespace MentorAi_backd.WebAPI.Controllers
     [Authorize(Roles = "Admin")]
     public class ModulesController : ControllerBase
     {
-        private readonly IModuleService _moduleService;
+        private readonly IModulesService _moduleService;
 
-        public ModulesController(IModuleService moduleService)
+        public ModulesController(IModulesService moduleService)
         {
             _moduleService = moduleService;
         }

@@ -21,7 +21,7 @@ namespace MentorAi_backd.Infrastructure.Persistance.Data
         public DbSet<ReviewerProfile> ReviewerProfiles { get; set; } = default!;
         public DbSet<ReviewerAvailability> ReviewerAvailabilities { get; set; } = default!;
 
-        public DbSet<Modules> Modules { get; set; } = default!;
+        public DbSet<LearningModule> Modules { get; set; } = default!;
         public DbSet<Roadmap> Roadmaps { get; set; } = default!;
         public DbSet<StudentRoadmapProgress> StudentRoadmapProgresses { get; set; } = default!;
         public DbSet<Problem> Problems { get; set; } = default!;
@@ -31,6 +31,7 @@ namespace MentorAi_backd.Infrastructure.Persistance.Data
         public DbSet<StudentCertification> StudentCertifications { get; set; } = default!;
         public DbSet<Badge> Badges { get; set; } = default!;
         public DbSet<UserBadge> UserBadges { get; set; } = default!;
+        public DbSet<RoadmapModule> RoadmapModules { get; set; }
 
 
         // Automatically sets timestamps (CreatedAt and LastUpdatedAt) for entities inheriting from BaseEntity.

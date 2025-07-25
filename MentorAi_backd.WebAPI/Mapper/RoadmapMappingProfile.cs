@@ -13,6 +13,8 @@ namespace MentorAi_backd.WebAPI.Mapper
                 .ReverseMap();
             CreateMap<Roadmap, RoadmapDto>()
                 .ForMember(dest => dest.Modules, opt => opt.MapFrom(src => src.Modules))
+                .ForMember(dest=>dest.EnrolledCount,
+                              opt => opt.MapFrom(src=>src.Progresses.Count(p=>!p.IsDeleted && p.IsActive)))
                 .ReverseMap();
             CreateMap<Roadmap, UpdateRoadmapDto>()
                 .ReverseMap();

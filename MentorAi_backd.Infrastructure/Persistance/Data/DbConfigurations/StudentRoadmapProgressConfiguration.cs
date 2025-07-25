@@ -17,7 +17,7 @@ namespace MentorAi_backd.Infrastructure.Persistance.Data.DbConfigurations
 
             
             builder.HasOne(srp => srp.Roadmap)
-                   .WithMany() 
+                   .WithMany(r=>r.Progresses) 
                    .HasForeignKey(srp => srp.RoadmapId)
                    .OnDelete(DeleteBehavior.Restrict); 
 
@@ -27,7 +27,7 @@ namespace MentorAi_backd.Infrastructure.Persistance.Data.DbConfigurations
                    .HasForeignKey(srp => srp.CurrentModuleId)
                    .IsRequired(false) 
                    .OnDelete(DeleteBehavior.SetNull);
-
+            
         }
     }
 }

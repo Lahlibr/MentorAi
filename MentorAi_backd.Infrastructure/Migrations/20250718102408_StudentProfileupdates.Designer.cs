@@ -929,13 +929,13 @@ namespace MentorAi_backd.Infrastructure.Migrations
 
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.Problem", b =>
                 {
-                    b.HasOne("MentorAi_backd.Domain.Entities.UserEntity.Modules", "Module")
+                    b.HasOne("MentorAi_backd.Domain.Entities.UserEntity.Modules", "LearningModule")
                         .WithMany("Problems")
                         .HasForeignKey("ModuleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Module");
+                    b.Navigation("LearningModule");
                 });
 
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.Review", b =>

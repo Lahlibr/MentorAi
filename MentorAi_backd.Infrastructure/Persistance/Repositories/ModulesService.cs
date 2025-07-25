@@ -13,18 +13,18 @@ using Microsoft.Extensions.Logging;
 
 namespace MentorAi_backd.Infrastructure.Persistance.Repositories
 {
-    public class ModuleService : IModuleService
+    public class ModulesService : IModulesService
     {
-        private readonly IGeneric<Module> _modules;
+        private readonly IGeneric<LearningModule> _modules;
         private readonly IGeneric<Roadmap> _moduleRepo;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<ModuleService> _logger;
+        private readonly ILogger<ModulesService> _logger;
         private readonly IMapper _mapper;
 
-        public ModuleService(IGeneric<Module> modules,
+        public ModulesService(IGeneric<LearningModule> modules,
             IGeneric<Roadmap> moduleRepo,
             IUnitOfWork unitOfWork,
-            ILogger<ModuleService> logger,
+            ILogger<ModulesService> logger,
             IMapper mapper)
         {
             _modules = modules;
@@ -37,7 +37,7 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
         {
             
                 var module = await _modules.GetByIdAsync(moduleId)
-                             ?? throw new NotFoundException($"Module with ID {moduleId} not found.");
+                             ?? throw new NotFoundException($"LearningModule with ID {moduleId} not found.");
                 var dto = _mapper.Map<ModuleDto>(module);
                 return ApiResponse<ModuleDto>.SuccessResponse(dto);
         }
@@ -59,31 +59,31 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
             var module = await _modules.GetByIdAsync(moduleId);
             if (module == null)
             {
-                return ApiResponse<ModuleDto>.ErrorResponse($"Module with ID {moduleId} not found.", 404);
+                return ApiResponse<ModuleDto>.ErrorResponse($"LearningModule with ID {moduleId} not found.", 404);
             }
             _mapper.Map(updateDto, module);
              await _modules.UpdateAsync(module);
             await _unitOfWork.SaveChangesAsync();
             var updatedDto = _mapper.Map<ModuleDto>(module);
-            return ApiResponse<ModuleDto>.SuccessResponse(updatedDto, "Module updated successfully.");
+            return ApiResponse<ModuleDto>.SuccessResponse(updatedDto, "LearningModule updated successfully.");
         }
 
         public async Task<ApiResponse<ModuleDto>> AddModuleAsync(CreateModuleDto moduleDto)
         {
             if (moduleDto == null)
-                throw new BadRequestException("Module data cannot be null.");
-            var module = _mapper.Map<Module>(moduleDto);
+                throw new BadRequestException("LearningModule data cannot be null.");
+            var module = _mapper.Map<LearningModule>(moduleDto);
             await _modules.AddAsync(module);
             await _unitOfWork.SaveChangesAsync();
             var createdDto = _mapper.Map<ModuleDto>(module);
-            return ApiResponse<ModuleDto>.SuccessResponse(createdDto, "Module added successfully.");
+            return ApiResponse<ModuleDto>.SuccessResponse(createdDto, "LearningModule added successfully.");
         }
 
         public async Task<ApiResponse<List<ModuleDto>>> AddBulkModulesAsync(List<CreateModuleDto> dtos)
         {
             if (dtos == null || !dtos.Any())
-                throw new BadRequestException("Module list is empty.");
-            var entities = _mapper.Map<List<Module>>(dtos);
+                throw new BadRequestException("LearningModule list is empty.");
+            var entities = _mapper.Map<List<LearningModule>>(dtos);
             await _modules.AddRangeAsync(entities);
             await _unitOfWork.SaveChangesAsync();
             var result = _mapper.Map<List<ModuleDto>>(entities);
@@ -94,10 +94,10 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
         {
             var module = await _modules.GetByIdAsync(moduleId);
             if (module == null)
-                throw new NotFoundException($"Module with ID {moduleId} not found.");
+                throw new NotFoundException($"LearningModule with ID {moduleId} not found.");
             _modules.Delete(module);
             await _unitOfWork.SaveChangesAsync();
-            return ApiResponse<ModuleDto>.SuccessResponse(null, "Module deleted successfully.");
+            return ApiResponse<ModuleDto>.SuccessResponse(null, "LearningModule deleted successfully.");
         }
     }
 }

@@ -35,9 +35,10 @@ namespace MentorAi_backd.Infrastructure.Persistance.Data.DbConfigurations
             builder.HasMany(sp => sp.UserBadges)
                     .WithOne(ub => ub.StudentProfile)
                     .HasForeignKey(ub => ub.StudentProfileId);
+           
 
             // Seed data for Alice's StudentProfile
-            
+
         }
     }
 }

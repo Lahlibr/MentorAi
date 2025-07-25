@@ -55,7 +55,7 @@ namespace MentorAi_backd.WebAPI.Mapper
                     .FirstOrDefault();
                 dest.CurrentRoadmapTitle = latest?.Roadmap?.Title ?? "Not Started";
                 dest.CurrentRoadmapProgressPercentage = latest?.CurrentProgressPercentage ?? 0.0;
-                dest.LastActiveModuleTitle = latest?.CurrentModule?.Title ?? "No Active Module";
+                dest.LastActiveModuleTitle = latest?.CurrentModule?.Title ?? "No Active LearningModule";
             });
 
             

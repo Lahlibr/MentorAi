@@ -24,7 +24,7 @@ namespace MentorAi_backd.Application.DTOs.ModulesDto
         [StringLength(50)]
         public string? Status { get; set; }
 
-        public int? Order { get; set; }
+       
         public string? Prerequisites { get; set; }
     }
 }

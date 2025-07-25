@@ -1,4 +1,5 @@
 ﻿using MentorAi_backd.Domain.Entities.Main;
+using MentorAi_backd.Domain.Entities.Student;
 
 namespace MentorAi_backd.Domain.Entities.UserEntity
 {
@@ -7,6 +8,7 @@ namespace MentorAi_backd.Domain.Entities.UserEntity
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+       
         public string? ImageUrl { get; set; }
         public string DifficultyLevel { get; set; } = string.Empty;
         public int EstimatedCompletionHours { get; set; } 
@@ -16,8 +18,11 @@ namespace MentorAi_backd.Domain.Entities.UserEntity
         public int StudentId { get; set; }
 
         // Relationships
-        public ICollection<Modules> Modules { get; set; } = new List<Modules>();
-        
+        public ICollection<LearningModule> Modules { get; set; } = new List<LearningModule>();
+        public ICollection<StudentRoadmapProgress> Progresses { get; set; } = new List<StudentRoadmapProgress>();
+        public ICollection<Problem> Problems { get; set; } = new List<Problem>();
+        //public ICollection<Challenges> Challenges { get; set; } = new List<Challenges>();
+        public ICollection<RoadmapModule> RoadmapModules { get; set; }
 
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MentorAi_backd.Application.Interfaces
 {
-    public interface IModuleService
+    public interface IModulesService
     {
         Task<ApiResponse<ModuleDto>> GetModuleByIdAsync(int moduleId);
         Task<ApiResponse<IEnumerable<ModuleDto>>> GetAllModuleAsync(int moduleId);

@@ -15,7 +15,7 @@ namespace MentorAi_backd.Application.DTOs.ModulesDto
         public string ResourceType { get; set; } = default!;       
         public string ResourceIdentifier { get; set; } = default!; 
         public string Status { get; set; } = "NotStarted";        
-        public int Order { get; set; }
+        
         public string? Prerequisites { get; set; }
     }
 }

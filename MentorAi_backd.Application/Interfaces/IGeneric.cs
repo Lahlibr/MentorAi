@@ -12,7 +12,7 @@ namespace MentorAi_backd.Application.Interfaces
         Task AddRangeAsync(IEnumerable<TEntity> entities);
         Task UpdateAsync(TEntity entities);
 
-        //Update Range
+        
         Task UpdateRange(IEnumerable<TEntity> entities);
         void Delete(TEntity entity);
         IQueryable<TEntity> Query();

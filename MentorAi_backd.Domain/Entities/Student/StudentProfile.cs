@@ -25,7 +25,7 @@ namespace MentorAi_backd.Domain.Entities.Student
 
         public string? CurrentLearningGoal { get; set; }
         public string? PreferredLearningStyle { get; set; }
-        public ICollection<StudentRoadmapProgress>? RoadmapProgresses { get; set; } = new List<StudentRoadmapProgress>();
+        public ICollection<StudentRoadmapProgress> RoadmapProgresses { get; set; } = new List<StudentRoadmapProgress>();
         public ICollection<ProblemAttempt> ProblemAttempts { get; set; } = new List<ProblemAttempt>();
         public ICollection<StudentCertification> StudentCertifications { get; set; } = new List<StudentCertification>();
         public ICollection<UserBadge> UserBadges { get; set; } = new List<UserBadge>();

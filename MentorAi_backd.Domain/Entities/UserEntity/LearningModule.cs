@@ -3,7 +3,7 @@
 
 namespace MentorAi_backd.Domain.Entities.UserEntity
 {
-    public class Modules : BaseEntity
+    public class LearningModule : BaseEntity
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
@@ -11,10 +11,9 @@ namespace MentorAi_backd.Domain.Entities.UserEntity
         public int OrderInRoadmap { get; set; } 
 
         // Foreign Key to Roadmap
-        public int RoadmapId { get; set; }
-        public Roadmap Roadmap { get; set; } = default!; 
-
-        
+       
+       
+        public ICollection<RoadmapModule> RoadmapModules { get; set; }
         public ICollection<Problem> Problems { get; set; } = new List<Problem>();
         
     }

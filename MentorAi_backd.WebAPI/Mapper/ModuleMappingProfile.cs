@@ -8,12 +8,12 @@ namespace MentorAi_backd.WebAPI.Mapper
     {
         public  ModuleMappingProfile()
         {
-            CreateMap<CreateModuleDto, Modules>()
-                .ForMember(dest => dest.Roadmap, opt => opt.Ignore())
+            CreateMap<CreateModuleDto, LearningModule>()
+                
                 .ReverseMap();
-            CreateMap<Modules, ModuleDto>()
+            CreateMap<LearningModule, ModuleDto>()
                 .ReverseMap();
-            CreateMap<Modules, UpdateModuleDto>()
+            CreateMap<LearningModule, UpdateModuleDto>()
                 .ReverseMap();
         }
     }
