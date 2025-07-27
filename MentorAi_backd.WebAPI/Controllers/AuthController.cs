@@ -27,7 +27,27 @@ namespace MentorAi_backd.Controllers
          public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
          {
               var result = await _authService.LoginAsync(loginDto);
-              return Ok(result);
+              if(!result.Success)
+              {
+                  return Unauthorized(result.Message);
+              }
+              var loginData = result.Data;
+
+              Response.Cookies.Append("access_token", loginData.AccessToken, new CookieOptions
+              {
+                  HttpOnly = true,
+                  Secure = true,
+                  SameSite = SameSiteMode.Strict,
+                  Expires = DateTime.UtcNow.AddMinutes(60) 
+              });
+              Response.Cookies.Append("refresh_token", loginData.RefreshToken, new CookieOptions
+              {
+                  HttpOnly = true,
+                  Secure = true,
+                  SameSite = SameSiteMode.Strict,
+                  Expires = DateTime.UtcNow.AddDays(30) 
+              });
+            return Ok(result);
         }
 
         [HttpGet("verify-email")]
