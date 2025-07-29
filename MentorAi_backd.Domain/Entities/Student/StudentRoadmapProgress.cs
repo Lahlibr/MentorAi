@@ -1,5 +1,6 @@
 ﻿using MentorAi_backd.Domain.Entities.UserEntity;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace MentorAi_backd.Domain.Entities.Student
 {
@@ -16,6 +17,7 @@ namespace MentorAi_backd.Domain.Entities.Student
         // Refer to Roadmap
         [ForeignKey("Roadmap")]
         public int RoadmapId { get; set; }
+        [JsonIgnore]
         public Roadmap Roadmap { get; set; } = default!;
 
         public double CurrentProgressPercentage { get; set; } = 0.0;

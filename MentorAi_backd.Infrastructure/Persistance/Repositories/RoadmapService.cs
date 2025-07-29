@@ -45,7 +45,8 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
             var activeProgress = await _progressRepo.Query()
                 .Where(p => p.StudentProfile.UserId == studentId && p.IsActive && !p.IsDeleted)
                 .Include(p => p.Roadmap)
-                .ThenInclude(p => p.Modules)
+                .ThenInclude(r => r.RoadmapModules)
+                .ThenInclude(rm => rm.LearningModule)
                 .FirstOrDefaultAsync();
             if (activeProgress == null)
             {
@@ -60,7 +61,7 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
         {
             var roadmaps = await _roadmapRepo.Query()
                 .Where(r => !r.IsDeleted)
-                .Include(r => r.Modules)
+                .Include(r => r.RoadmapModules).ThenInclude(rm => rm.LearningModule)
                 .Include(r => r.Progresses)
                 .ToListAsync();
 
@@ -69,12 +70,13 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
             var roadmapDtos = _mapper.Map<IEnumerable<RoadmapDto>>(roadmaps);
             return ApiResponse<IEnumerable<RoadmapDto>>.SuccessResponse(roadmapDtos, "Roadmaps retrieved successfully");
         }
-        public async Task<ApiResponse<IEnumerable<RoadmapDto>>> GetStudentRoadmapsAsync(int studentId)
+        public async Task<ApiResponse<IEnumerable<RoadmapDto>>> GetStudentAllRoadmapsAsync(int studentId)
         {
             var enrollments = await _progressRepo.Query()
                 .Where(p => p.StudentProfileId == studentId && p.IsActive && !p.IsDeleted)
                 .Include(p => p.Roadmap)
-                .ThenInclude(r => r.Modules)
+                .ThenInclude(r => r.RoadmapModules)
+                .ThenInclude(rm => rm.LearningModule)
                 .ToListAsync();
 
             var roadmapDtos = _mapper.Map<IEnumerable<RoadmapDto>>(enrollments.Select(e => e.Roadmap));
@@ -82,12 +84,26 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
         }
 
 
+
         public async Task<ApiResponse<RoadmapDto>> CreateRoadmapAsync( CreateRoadmapDto dto)
         {
             var roadmap = _mapper.Map<Roadmap>(dto);
             roadmap.IsDeleted = false;
+            roadmap.IsActive = true;
+            if (dto.Modules != null && dto.Modules.Any())
+            {
+                roadmap.Modules = new List<LearningModule>();
+                foreach (var moduleDto in dto.Modules)
+                {
+                    var module = _mapper.Map<LearningModule>(moduleDto);
+                    module.IsDeleted = false;
+                    
+                    roadmap.Modules.Add(module);
+                }
+            }
             await _roadmapRepo.AddAsync(roadmap);
             await _unitOfWork.SaveChangesAsync();
+            var roadmapDto = _mapper.Map<RoadmapDto>(roadmap);
             return ApiResponse<RoadmapDto>.SuccessResponse(_mapper.Map<RoadmapDto>(roadmap), "Roadmap created successfully");
 
         }
@@ -95,15 +111,21 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
         public async Task<ApiResponse<RoadmapDto>> AssignModulesAsync(int roadmapId, List<int> moduleIds)
         {
             var roadmap = await _roadmapRepo.Query()
-                .Include(r => r.Modules)
-                .FirstOrDefaultAsync(r => r.Id == roadmapId && !r.IsDeleted);
+                    .Include(r => r.RoadmapModules)
+                       .ThenInclude(rm => rm.LearningModule)
+                    .FirstOrDefaultAsync(r => r.Id == roadmapId && !r.IsDeleted);
             if (roadmap == null)
                 throw new NotFoundException($"Roadmap with ID {roadmapId} not found.");
             var modules = await _moduleRepo.Query()
                 .Where(m=>moduleIds.Contains(m.Id)&& !m.IsDeleted)
                 .ToListAsync();
+            if (roadmap.RoadmapModules == null)
+            {
+                roadmap.RoadmapModules = new List<RoadmapModule>();
+            }
             var existingModuleIds = roadmap.RoadmapModules.Select(rm => rm.ModuleId).ToHashSet();
-            for(int i= 0; i < moduleIds.Count; i++)
+
+            for (int i= 0; i < moduleIds.Count; i++)
             {
                 int moduleId = moduleIds[i];
                 {

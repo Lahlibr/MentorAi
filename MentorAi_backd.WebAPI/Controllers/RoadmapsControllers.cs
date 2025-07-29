@@ -30,7 +30,7 @@ public class RoadmapsController : ControllerBase
     [HttpGet("student/{studentId}")]
     public async Task<IActionResult> GetStudentRoadmaps(int studentId)
     {
-        var response = await _roadmapService.GetStudentRoadmapsAsync(studentId);
+        var response = await _roadmapService.GetStudentAllRoadmapsAsync(studentId);
         return Ok(response);
     }
 
@@ -48,6 +48,12 @@ public class RoadmapsController : ControllerBase
     {
         var response = await _roadmapService.CreateRoadmapAsync(dto);
         return CreatedAtAction(nameof(GetAllRoadmaps), null, response);
+    }
+    [HttpPost("{roadmapId}/assign-modules")]
+    public async Task<IActionResult> AssignModules(int roadmapId, [FromBody] List<int> moduleIds)
+    {
+        var response = await _roadmapService.AssignModulesAsync(roadmapId, moduleIds);
+        return Ok(response);
     }
 
     // PUT: api/roadmaps/{id}

@@ -4,6 +4,7 @@ using MentorAi_backd.Infrastructure.Persistance.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MentorAi_backd.Infrastructure.Migrations
 {
     [DbContext(typeof(MentorAiDbContext))]
-    partial class MentorAiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250729103756_proper")]
+    partial class proper
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -561,15 +564,6 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Property<int>("OrderInRoadmap")
                         .HasColumnType("int");
 
-                    b.Property<string>("Prerequisites")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ResourceIdentifier")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ResourceType")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("RoadmapId")
                         .HasColumnType("int");
 
@@ -1054,11 +1048,9 @@ namespace MentorAi_backd.Infrastructure.Migrations
 
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.LearningModule", b =>
                 {
-                    b.HasOne("MentorAi_backd.Domain.Entities.UserEntity.Roadmap", "Roadmap")
+                    b.HasOne("MentorAi_backd.Domain.Entities.UserEntity.Roadmap", null)
                         .WithMany("Modules")
                         .HasForeignKey("RoadmapId");
-
-                    b.Navigation("Roadmap");
                 });
 
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.Problem", b =>

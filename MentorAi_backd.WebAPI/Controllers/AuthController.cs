@@ -20,7 +20,13 @@ namespace MentorAi_backd.Controllers
        [HttpPost("register")]
        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
        {
-           var result = await _authService.RegisterAsync(registerDto);
+           if (!ModelState.IsValid)
+           {
+               var errors = ModelState.Values.SelectMany(v => v.Errors)
+                   .Select(e => e.ErrorMessage);
+               return BadRequest(new { errors });
+           }
+            var result = await _authService.RegisterAsync(registerDto);
            return Ok(result);
        }
        [HttpPost("login")]
