@@ -1,5 +1,6 @@
 ﻿// MentorAi_backd.Infrastructure/Persistence.Data/MentorAiDbContext.cs
 using MentorAi_backd.Domain.Entities.Main;
+using MentorAi_backd.Domain.Entities.Problems;
 using MentorAi_backd.Domain.Entities.Reviewer;
 using MentorAi_backd.Domain.Entities.Reviwer;
 using MentorAi_backd.Domain.Entities.Student;
@@ -32,6 +33,11 @@ namespace MentorAi_backd.Infrastructure.Persistance.Data
         public DbSet<Badge> Badges { get; set; } = default!;
         public DbSet<UserBadge> UserBadges { get; set; } = default!;
         public DbSet<RoadmapModule> RoadmapModules { get; set; }
+
+        //Problems
+        public DbSet<Submission> Submissions { get; set; }
+        public DbSet<TestCase> TestCases { get; set; }
+        public DbSet<TestCaseResultEntity> TestCaseResults { get; set; }
 
 
         // Automatically sets timestamps (CreatedAt and LastUpdatedAt) for entities inheriting from BaseEntity.
