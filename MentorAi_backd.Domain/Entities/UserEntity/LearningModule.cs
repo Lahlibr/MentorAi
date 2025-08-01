@@ -1,4 +1,5 @@
 ﻿using MentorAi_backd.Domain.Entities.Main;
+using MentorAi_backd.Domain.Entities.Problems;
 
 
 namespace MentorAi_backd.Domain.Entities.UserEntity

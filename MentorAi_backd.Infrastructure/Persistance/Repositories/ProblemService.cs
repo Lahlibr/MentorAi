@@ -10,10 +10,9 @@ using Microsoft.Extensions.Logging;
 
 namespace MentorAi_backd.Infrastructure.Persistance.Repositories
 {
-    public class ProblemService : IProblemService
+    public class ProblemService 
     {
         private readonly MentorAiDbContext _context;
-        private readonly ICodeCompilerService  _codeCompilerService;
         private readonly IMapper _mapper;
         private readonly ILogger<ProblemService> _logger;
 

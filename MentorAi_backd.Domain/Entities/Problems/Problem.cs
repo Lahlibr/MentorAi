@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MentorAi_backd.Domain.Entities.UserEntity;
 using MentorAi_backd.Domain.Enums;
 
 namespace MentorAi_backd.Domain.Entities.Problems
@@ -23,8 +24,8 @@ namespace MentorAi_backd.Domain.Entities.Problems
 
         public virtual ICollection<Submission>Submission { get; set; } = new List<Submission>();
         public virtual ICollection<TestCase> TestCases { get; set; } = new List<TestCase>();
-
-
+        public int ModuleId { get; set; }
+        public virtual LearningModule LearningModule { get; set; } = default!;
 
 
 

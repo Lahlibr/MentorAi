@@ -40,7 +40,7 @@ namespace MentorAi_backd.Domain.Entities.Problems
             public virtual Problem Problem { get; set; } = default!;
             public virtual StudentProfile Student { get; set; } = default!;
 
-            public virtual ICollection<TestCase> TestCaseResults { get; set; } = new List<TestCase>();
+            public ICollection<TestCaseResultEntity> TestCaseResults { get; set; }
 
 
     }

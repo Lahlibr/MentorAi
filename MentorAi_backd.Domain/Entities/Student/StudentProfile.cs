@@ -2,6 +2,7 @@
 using MentorAi_backd.Domain.Entities.UserEntity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using MentorAi_backd.Domain.Entities.Problems;
 
 
 namespace MentorAi_backd.Domain.Entities.Student
@@ -29,6 +30,7 @@ namespace MentorAi_backd.Domain.Entities.Student
         public ICollection<ProblemAttempt> ProblemAttempts { get; set; } = new List<ProblemAttempt>();
         public ICollection<StudentCertification> StudentCertifications { get; set; } = new List<StudentCertification>();
         public ICollection<UserBadge> UserBadges { get; set; } = new List<UserBadge>();
+        public virtual ICollection<Submission> Submissions { get; set; } = new List<Submission>();
 
     }
 }
