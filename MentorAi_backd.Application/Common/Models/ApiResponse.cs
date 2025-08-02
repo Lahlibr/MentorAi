@@ -6,6 +6,11 @@ public class ApiResponse<T>
     public T Data { get; set; }
     public object Errors { get; set; } // Can be Dictionary<string, string[]> or List<string>
     public int StatusCode { get; set; }
+    public int TotalExecutionTime { get; set; }
+    public int MemoryUsed { get; set; }
+    public bool CompileSuccess { get; set; }
+    public string CompileError { get; set; }
+    public object TestResults { get; set; }
 
     public static ApiResponse<T> SuccessResponse(T data, string message = "", int statusCode = 200)
         => new()

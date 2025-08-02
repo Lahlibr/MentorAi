@@ -16,5 +16,11 @@ namespace MentorAi_backd.Application.DTOs.ProblemDto
         public string ErrorDetails { get; set; }
         public int ExecutionTime { get; set; }
         public bool IsHidden { get; set; }
+        public int SubmissionId { get; set; }
+        public string Status { get; set; }
+        public bool IsCorrect { get; set; }
+        public string CompileError { get; set; }
+        public int MemoryUsed { get; set; }
+        public object TestCaseResults { get; set; }
     }
 }
