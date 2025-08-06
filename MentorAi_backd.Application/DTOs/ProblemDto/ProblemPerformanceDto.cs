@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MentorAi_backd.Domain.Entities.Problems;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,5 +17,10 @@ namespace MentorAi_backd.Application.DTOs.ProblemDto
         public int WrongSubmissions { get; set; }
         public DateTime? FirstAttemptTime { get; set; }
         public DateTime? SolvedTime { get; set; }
+        public int SuccessfulAttempts { get; set; }
+        public double AverageTimeToSolve { get; set; }
+        public double SuccessRate { get; set; }
+
+        public List<Submission> Submissions { get; set; }
     }
 }

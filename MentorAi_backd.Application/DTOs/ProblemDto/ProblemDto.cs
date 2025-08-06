@@ -20,5 +20,6 @@ namespace MentorAi_backd.Application.DTOs.ProblemDto
         public List<string> ExampleOutputs { get; set; } = new List<string>();
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+        public List<TestCaseResultDto> SampleTestCases { get; set; } = new();
     }
 }

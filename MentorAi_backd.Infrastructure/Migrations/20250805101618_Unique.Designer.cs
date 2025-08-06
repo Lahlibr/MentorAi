@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MentorAi_backd.Infrastructure.Migrations
 {
     [DbContext(typeof(MentorAiDbContext))]
-    [Migration("20250722075937_profileupdate")]
-    partial class profileupdate
+    [Migration("20250805101618_Unique")]
+    partial class Unique
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,165 @@ namespace MentorAi_backd.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("MentorAi_backd.Domain.Entities.Problems.Problem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DifficultyLevel")
+                        .HasColumnType("int")
+                        .HasColumnName("DifficultyLevel");
+
+                    b.Property<int>("ModuleId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RoadmapId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ModuleId");
+
+                    b.HasIndex("RoadmapId");
+
+                    b.ToTable("Problems", (string)null);
+                });
+
+            modelBuilder.Entity("MentorAi_backd.Domain.Entities.Problems.Submission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AttemptsCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CompileError")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ExecutionTime")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsCorrect")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MemoryUsed")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProblemId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ProblemStartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SubmissionTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProblemId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Submissions");
+                });
+
+            modelBuilder.Entity("MentorAi_backd.Domain.Entities.Problems.TestCase", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ExpectedOutput")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Input")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsHidden")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProblemId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProblemId");
+
+                    b.ToTable("TestCases");
+                });
+
+            modelBuilder.Entity("MentorAi_backd.Domain.Entities.Problems.TestCaseResultEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ActualOutput")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ErrorDetails")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ExecutionTime")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Passed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("SubmissionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TestCaseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubmissionId");
+
+                    b.HasIndex("TestCaseId");
+
+                    b.ToTable("TestCaseResults");
+                });
 
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.Reviewer.ReviewerAvailability", b =>
                 {
@@ -79,6 +238,9 @@ namespace MentorAi_backd.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -152,6 +314,9 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Property<double>("ExecutionTimeMs")
                         .HasColumnType("float");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -214,6 +379,9 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -252,7 +420,7 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Age")
+                    b.Property<int?>("Age")
                         .HasColumnType("int");
 
                     b.Property<int?>("AssessmentScore")
@@ -268,26 +436,25 @@ namespace MentorAi_backd.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Graduation")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("GraduationYear")
+                    b.Property<int?>("GraduationYear")
                         .HasColumnType("int");
 
                     b.Property<string>("GuardianEmail")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GuardianName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GuardianPhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GuardianRelationship")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -332,7 +499,13 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Property<double>("CurrentProgressPercentage")
                         .HasColumnType("float");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastActivityDate")
@@ -374,6 +547,9 @@ namespace MentorAi_backd.Infrastructure.Migrations
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -426,6 +602,9 @@ namespace MentorAi_backd.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -477,6 +656,9 @@ namespace MentorAi_backd.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -505,7 +687,7 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.ToTable("Certifications");
                 });
 
-            modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.Modules", b =>
+            modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.LearningModule", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -522,6 +704,9 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -538,91 +723,30 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Property<int>("OrderInRoadmap")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoadmapId")
+                    b.Property<string>("Prerequisites")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResourceIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResourceType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RoadmapId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RoadmapId");
 
+                    b.HasIndex("Title")
+                        .IsUnique();
+
                     b.ToTable("Modules");
-                });
-
-            modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.Problem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DifficultyLevel")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ExampleTestCasesJson")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ExpectedSolutionHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InputFormat")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastLogout")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("LastUpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastUpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ModuleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderInModule")
-                        .HasColumnType("int");
-
-                    b.Property<string>("OutputFormat")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SolutionTemplate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ModuleId");
-
-                    b.ToTable("Problems");
                 });
 
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.ReviewerProfile", b =>
@@ -648,6 +772,9 @@ namespace MentorAi_backd.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsAvailableForReviews")
                         .HasColumnType("bit");
 
@@ -668,6 +795,9 @@ namespace MentorAi_backd.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ReviewsCompleted")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<int>("YearsOfExperience")
@@ -706,6 +836,9 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -717,6 +850,9 @@ namespace MentorAi_backd.Infrastructure.Migrations
 
                     b.Property<string>("LastUpdatedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -734,6 +870,24 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roadmaps");
+                });
+
+            modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.RoadmapModule", b =>
+                {
+                    b.Property<int>("RoadmapId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ModuleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoadmapId", "ModuleId");
+
+                    b.HasIndex("ModuleId");
+
+                    b.ToTable("RoadmapModules");
                 });
 
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.User", b =>
@@ -763,6 +917,9 @@ namespace MentorAi_backd.Infrastructure.Migrations
 
                     b.Property<int>("FailedLoginAttempts")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -847,6 +1004,70 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("MentorAi_backd.Domain.Entities.Problems.Problem", b =>
+                {
+                    b.HasOne("MentorAi_backd.Domain.Entities.UserEntity.LearningModule", "LearningModule")
+                        .WithMany("Problems")
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MentorAi_backd.Domain.Entities.UserEntity.Roadmap", null)
+                        .WithMany("Problems")
+                        .HasForeignKey("RoadmapId");
+
+                    b.Navigation("LearningModule");
+                });
+
+            modelBuilder.Entity("MentorAi_backd.Domain.Entities.Problems.Submission", b =>
+                {
+                    b.HasOne("MentorAi_backd.Domain.Entities.Problems.Problem", "Problem")
+                        .WithMany("Submission")
+                        .HasForeignKey("ProblemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MentorAi_backd.Domain.Entities.Student.StudentProfile", "Student")
+                        .WithMany("Submissions")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Problem");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("MentorAi_backd.Domain.Entities.Problems.TestCase", b =>
+                {
+                    b.HasOne("MentorAi_backd.Domain.Entities.Problems.Problem", "Problem")
+                        .WithMany("TestCases")
+                        .HasForeignKey("ProblemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Problem");
+                });
+
+            modelBuilder.Entity("MentorAi_backd.Domain.Entities.Problems.TestCaseResultEntity", b =>
+                {
+                    b.HasOne("MentorAi_backd.Domain.Entities.Problems.Submission", "Submission")
+                        .WithMany("TestCaseResults")
+                        .HasForeignKey("SubmissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MentorAi_backd.Domain.Entities.Problems.TestCase", "TestCase")
+                        .WithMany()
+                        .HasForeignKey("TestCaseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Submission");
+
+                    b.Navigation("TestCase");
+                });
+
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.Reviewer.ReviewerAvailability", b =>
                 {
                     b.HasOne("MentorAi_backd.Domain.Entities.UserEntity.ReviewerProfile", "ReviewerProfile")
@@ -887,8 +1108,8 @@ namespace MentorAi_backd.Infrastructure.Migrations
 
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.Student.ProblemAttempt", b =>
                 {
-                    b.HasOne("MentorAi_backd.Domain.Entities.UserEntity.Problem", "Problem")
-                        .WithMany("ProblemAttempts")
+                    b.HasOne("MentorAi_backd.Domain.Entities.Problems.Problem", "Problem")
+                        .WithMany()
                         .HasForeignKey("ProblemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -936,13 +1157,13 @@ namespace MentorAi_backd.Infrastructure.Migrations
 
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.Student.StudentRoadmapProgress", b =>
                 {
-                    b.HasOne("MentorAi_backd.Domain.Entities.UserEntity.Modules", "CurrentModule")
+                    b.HasOne("MentorAi_backd.Domain.Entities.UserEntity.LearningModule", "CurrentModule")
                         .WithMany()
                         .HasForeignKey("CurrentModuleId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("MentorAi_backd.Domain.Entities.UserEntity.Roadmap", "Roadmap")
-                        .WithMany()
+                        .WithMany("Progresses")
                         .HasForeignKey("RoadmapId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -979,26 +1200,13 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Navigation("StudentProfile");
                 });
 
-            modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.Modules", b =>
+            modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.LearningModule", b =>
                 {
                     b.HasOne("MentorAi_backd.Domain.Entities.UserEntity.Roadmap", "Roadmap")
                         .WithMany("Modules")
-                        .HasForeignKey("RoadmapId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoadmapId");
 
                     b.Navigation("Roadmap");
-                });
-
-            modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.Problem", b =>
-                {
-                    b.HasOne("MentorAi_backd.Domain.Entities.UserEntity.Modules", "LearningModule")
-                        .WithMany("Problems")
-                        .HasForeignKey("ModuleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("LearningModule");
                 });
 
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.ReviewerProfile", b =>
@@ -1010,6 +1218,37 @@ namespace MentorAi_backd.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.RoadmapModule", b =>
+                {
+                    b.HasOne("MentorAi_backd.Domain.Entities.UserEntity.LearningModule", "LearningModule")
+                        .WithMany("RoadmapModules")
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MentorAi_backd.Domain.Entities.UserEntity.Roadmap", "Roadmap")
+                        .WithMany("RoadmapModules")
+                        .HasForeignKey("RoadmapId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LearningModule");
+
+                    b.Navigation("Roadmap");
+                });
+
+            modelBuilder.Entity("MentorAi_backd.Domain.Entities.Problems.Problem", b =>
+                {
+                    b.Navigation("Submission");
+
+                    b.Navigation("TestCases");
+                });
+
+            modelBuilder.Entity("MentorAi_backd.Domain.Entities.Problems.Submission", b =>
+                {
+                    b.Navigation("TestCaseResults");
                 });
 
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.Student.ProblemAttempt", b =>
@@ -1025,6 +1264,8 @@ namespace MentorAi_backd.Infrastructure.Migrations
 
                     b.Navigation("StudentCertifications");
 
+                    b.Navigation("Submissions");
+
                     b.Navigation("UserBadges");
                 });
 
@@ -1038,14 +1279,11 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Navigation("StudentCertifications");
                 });
 
-            modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.Modules", b =>
+            modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.LearningModule", b =>
                 {
                     b.Navigation("Problems");
-                });
 
-            modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.Problem", b =>
-                {
-                    b.Navigation("ProblemAttempts");
+                    b.Navigation("RoadmapModules");
                 });
 
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.ReviewerProfile", b =>
@@ -1056,6 +1294,12 @@ namespace MentorAi_backd.Infrastructure.Migrations
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.Roadmap", b =>
                 {
                     b.Navigation("Modules");
+
+                    b.Navigation("Problems");
+
+                    b.Navigation("Progresses");
+
+                    b.Navigation("RoadmapModules");
                 });
 
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.User", b =>

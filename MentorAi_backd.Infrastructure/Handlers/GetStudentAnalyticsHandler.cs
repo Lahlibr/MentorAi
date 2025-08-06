@@ -6,21 +6,24 @@ using System.Threading.Tasks;
 using MediatR;
 using MentorAi_backd.Application.DTOs.ProblemDto;
 using MentorAi_backd.Application.Queries;
+using MentorAi_backd.Infrastructure.Persistance.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace MentorAi_backd.Infrastructure.Handlers
 {
     public class GetStudentAnalyticsHandler : IRequestHandler<GetStudentAnalyticsQuery, StudentAnalyticsDto>
     {
-        private readonly MentorAi_backd _context;
+        private readonly MentorAiDbContext _context;
 
-        public GetStudentAnalyticsHandler(MentorAi_backd context)
+        public GetStudentAnalyticsHandler(MentorAiDbContext context)
         {
             _context = context;
         }
         public async Task<StudentAnalyticsDto> Handle(GetStudentAnalyticsQuery request, CancellationToken cancellationToken)
         {
-            var student = await _context.Students
-                .FirstOrDefaultAsync(s => s.Id == request.StudentId, cancellationToken);
+            var student = await _context.StudentProfiles
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(s => s.UserId == request.StudentId, cancellationToken);
             if (student == null)
                 throw new ArgumentException("Student not found", nameof(request.StudentId));
             var submissions = await _context.Submissions
@@ -32,8 +35,8 @@ namespace MentorAi_backd.Infrastructure.Handlers
                 .Select(g => new ProblemPerformanceDto
                 {
                     ProblemId = g.Key,
-                    ProblemName = g.First().Problem.Name,
-                    TotalAttempts = g.Count(),
+                    ProblemTitle = g.First().Problem.Title,
+                    Attempts = g.Count(),
                     SuccessfulAttempts = g.Count(s => s.IsCorrect),
                     AverageTimeToSolve = g.Average(s => s.ExecutionTime),
                     SuccessRate = (double)g.Count(s => s.IsCorrect) / g.Count()
@@ -46,8 +49,8 @@ namespace MentorAi_backd.Infrastructure.Handlers
                 return new ProblemPerformanceDto
                 {
                     ProblemId = pg.ProblemId,
-                    ProblemTitle = pg.ProblemName,
-                    Attempts = pg.TotalAttempts,
+                    ProblemTitle = pg.ProblemTitle,
+                    Attempts = pg.Attempts,
                     Status = pg.SuccessfulAttempts > 0 ? "Solved" : "Attempted",
                     TimeSpent = firstCorrect != null ? (firstCorrect.SubmissionTime - firstAttempt.ProblemStartTime).TotalMinutes :
                     (pg.Submissions.Last().SubmissionTime - firstAttempt.ProblemStartTime).TotalMinutes,
@@ -60,8 +63,8 @@ namespace MentorAi_backd.Infrastructure.Handlers
             var solvedProblems = problemPerformances.Where(p=> p.Status == "Solved").ToList();
             return new StudentAnalyticsDto
             {
-                StudentId = student.Id,
-                StudentName = student.Name,
+                StudentId = student.UserId,
+                StudentName = student.User.UserName,
                 ProblemsSolved = solvedProblems.Count,
                 TotalAttempts = submissions.Count,
                 AverageTimeToSolve = solvedProblems.Any() ? solvedProblems.Average(p => p.TimeSpent) : 0,
@@ -70,19 +73,7 @@ namespace MentorAi_backd.Infrastructure.Handlers
             };
         }
 
-        public class GetLeaderboardHandler : IRequestHandler<GetLeaderBoardQuery, LeaderboardDto>
-        {
-            private readonly MentorAi_backd _context;
-            public GetLeaderboardHandler(MentorAi_backd context)
-            {
-                _context = context;
-            }
-            public async Task<LeaderboardDto> Handle(GetLeaderBoardQuery request, CancellationToken cancellationToken)
-            {
-               var student = await _context.Students.ToListAsync(cancellationToken);
-               var entries = new List<LeaderboardEntryDto>();
-            }
-        }
+       
     }
 
 }

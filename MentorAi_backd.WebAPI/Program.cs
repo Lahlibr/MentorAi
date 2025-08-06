@@ -1,5 +1,7 @@
 using AutoMapper;
+using MentorAi_backd.Application.Hubs;
 using MentorAi_backd.Application.Interfaces;
+using MentorAi_backd.Infrastructure.Compilers;
 using MentorAi_backd.Infrastructure.Persistance.Data;
 using MentorAi_backd.Infrastructure.Persistance.Repositories;
 using MentorAi_backd.Middleware;
@@ -11,8 +13,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using CodingPlatform.ConsoleAnalytics.Services;
+using MentorAi_backd.Infrastructure.Executors;
+using MentorAi_backd.Infrastructure.Handlers; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -142,6 +148,21 @@ builder.Services.AddScoped<IRoadmapService, RoadmapService>();
 builder.Services.AddScoped<IModulesService, ModulesService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped(typeof(IGeneric<>), typeof(Generic<>));
+builder.Services.AddScoped< GradingService>();
+builder.Services.AddScoped<ICodeRunnerService, CodeRunnerService>();
+builder.Services.AddSingleton<IBackgroundJobQueue, BackgroundJobQueue>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped< CompilerFactory>();
+builder.Services.AddScoped<IExecutor, ProcessExecutor>();
+builder.Services.AddScoped<AnalyticsService>();
+
+
+// SignalR Hub for real-time updates
+builder.Services.AddSignalR();
+
+
+//MediatR for CQRS pattern
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetStudentAnalyticsHandler>());
 
 
 // ---------------------------
@@ -230,7 +251,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAll"); // CORS policy
-
+app.MapHub<SubmissionStatusHub>("/submissionHub");
 app.UseAuthentication(); // JWT authentication
 app.UseAuthorization();
 

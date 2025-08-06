@@ -8,8 +8,20 @@ using MediatR;
 
 namespace MentorAi_backd.Application.Commands
 {
-    public record CreateSubmissionCommand(CreateSubmissionDto SubmissionDto) : IRequest<int>
+    public record CreateSubmissionCommand : IRequest<int>
     {
-        
+        public int ProblemId { get; set; }
+        public int UserId { get; set; }
+
+        public string Code { get; set; }    
+        public string Language { get; set; }
+        public CreateSubmissionCommand(CreateSubmissionDto dto)
+        {
+            ProblemId = dto.ProblemId;
+            UserId = dto.StudentId; // assuming StudentId maps to UserId in your system
+            Code = dto.Code;
+            Language = dto.Language;
+        }
     }
-}
+   
+    }

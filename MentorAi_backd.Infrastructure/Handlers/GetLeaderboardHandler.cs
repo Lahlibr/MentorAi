@@ -19,7 +19,8 @@ namespace MentorAi_backd.Infrastructure.Handlers
         {
             _context = context;
         }
-        public async Task<LeaderboardDto>Handle(GetLeaderBoardQuery request, CancellationToken cancellationToken)
+
+        public async Task<LeaderboardDto> Handle(GetLeaderBoardQuery request, CancellationToken cancellationToken)
         {
             var students = await _context.StudentProfiles.ToListAsync(cancellationToken);
             var entries = new List<LeaderboardEntryDto>();
@@ -27,47 +28,59 @@ namespace MentorAi_backd.Infrastructure.Handlers
             foreach (var student in students)
             {
                 var submissions = await _context.Submissions
-                    .Where(s => s.StudentId == student.Id)
+                    .Where(s => s.StudentId == student.UserId)
                     .Where(s => request.ProblemId == null || s.ProblemId == request.ProblemId)
                     .ToListAsync(cancellationToken);
-                if(!submissions.Any()) continue;
-                var problemGroups = submissions.GroupBy(s => s.ProblemId).ToList();
-                var solvedProblems = problemGroups.Count(g => g.Any(s => s.IsCorrect)).ToList();
 
-                var averageTime = 0.0;
-                if (solvedProblems.Any())
+                if (!submissions.Any()) continue;
+
+                var problemGroups = submissions.GroupBy(s => s.ProblemId).ToList();
+
+                var solvedProblemGroups = problemGroups.Where(g => g.Any(s => s.IsCorrect)).ToList();
+
+                double averageTime = 0.0;
+                if (solvedProblemGroups.Any())
                 {
-                    var times = solvedProblems.Select(g =>
+                    var times = solvedProblemGroups.Select(g =>
                     {
                         var firstCorrect = g.FirstOrDefault(s => s.IsCorrect);
                         var firstAttempt = g.OrderBy(s => s.SubmissionTime).FirstOrDefault();
-                        return (firstCorrect.SubmissionTime - firstAttempt.ProblemStartTime).TotalMinutes;
-                    });
-                    averageTime = times.Average();
+                        if (firstCorrect != null && firstAttempt != null)
+                            return (firstCorrect.SubmissionTime - firstAttempt.ProblemStartTime).TotalMinutes;
+                        return 0.0;
+                    }).Where(t => t > 0); // exclude zeros just in case
+
+                    if (times.Any())
+                        averageTime = times.Average();
                 }
+
                 entries.Add(new LeaderboardEntryDto
                 {
-                    StudentId = User.Id,
-                    StudentName = User.UserName,
-                    ProblemsSolved = solvedProblems.Count,
+                    StudentId = student.UserId,
+                    StudentName = student.User.UserName,
+                    ProblemsSolved = solvedProblemGroups.Count,
                     TotalAttempts = submissions.Count,
                     AverageTime = averageTime,
-                    SuccessRate = submissions.Any() ? (double)solvedProblems.Count / submissions.Count : 0
+                    SuccessRate = problemGroups.Any() ? (double)solvedProblemGroups.Count / problemGroups.Count() : 0,
                 });
-                var sortedEntries = entries.OrderByDescending(e => e.ProblemsSolved)
-                    .ThenBy(e => e.AverageTime).ToList()
-                    .Select((entry, index) =>
-                    {
-                        entry.Rank = index + 1;
-                        return entry;
-                    }).ToList();
-                return new LeaderboardDto
-                {
-                    Entries = sortedEntries,
-                    TotalStudents = sortedEntries.Count
-                };
+            }
 
+            var sortedEntries = entries
+                .OrderByDescending(e => e.ProblemsSolved)
+                .ThenBy(e => e.AverageTime)
+                .Select((entry, index) =>
+                {
+                    entry.Rank = index + 1;
+                    return entry;
+                })
+                .ToList();
+
+            return new LeaderboardDto
+            {
+                Entries = sortedEntries,
+                TotalStudents = sortedEntries.Count
             };
         }
     }
+
 }

@@ -20,7 +20,7 @@ namespace MentorAi_backd.Domain.Entities.Problems
         
         public string Description { get; set; } // Stored as nvarchar(max) or similar
 
-        public DifficultyLevelEnum Difficulty { get; set; }
+        public DifficultyLevelEnum DifficultyLevel { get; set; }
 
         public virtual ICollection<Submission>Submission { get; set; } = new List<Submission>();
         public virtual ICollection<TestCase> TestCases { get; set; } = new List<TestCase>();

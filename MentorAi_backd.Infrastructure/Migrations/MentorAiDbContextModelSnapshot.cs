@@ -34,8 +34,9 @@ namespace MentorAi_backd.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Difficulty")
-                        .HasColumnType("int");
+                    b.Property<int>("DifficultyLevel")
+                        .HasColumnType("int")
+                        .HasColumnName("DifficultyLevel");
 
                     b.Property<int>("ModuleId")
                         .HasColumnType("int");
@@ -45,7 +46,8 @@ namespace MentorAi_backd.Infrastructure.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
 
@@ -53,7 +55,7 @@ namespace MentorAi_backd.Infrastructure.Migrations
 
                     b.HasIndex("RoadmapId");
 
-                    b.ToTable("Problems");
+                    b.ToTable("Problems", (string)null);
                 });
 
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.Problems.Submission", b =>
@@ -512,6 +514,9 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Property<int>("StudentProfileId")
                         .HasColumnType("int");
 
+                    b.Property<double>("thresholdmark")
+                        .HasColumnType("float");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CurrentModuleId");
@@ -732,11 +737,14 @@ namespace MentorAi_backd.Infrastructure.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RoadmapId");
+
+                    b.HasIndex("Title")
+                        .IsUnique();
 
                     b.ToTable("Modules");
                 });

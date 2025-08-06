@@ -35,7 +35,7 @@ namespace MentorAi_backd.WebAPI.Controllers
         public async Task<IActionResult> CreateModule([FromBody] CreateModuleDto dto)
         {
             var response = await _moduleService.AddModuleAsync(dto);
-            return StatusCode(response.StatusCode, response);
+            return CreatedAtAction(nameof(GetModuleById), new { moduleId = response.Data.Id }, response);
         }
 
         [HttpPost("bulk")]

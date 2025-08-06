@@ -111,40 +111,41 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
         public async Task<ApiResponse<RoadmapDto>> AssignModulesAsync(int roadmapId, List<int> moduleIds)
         {
             var roadmap = await _roadmapRepo.Query()
-                    .Include(r => r.RoadmapModules)
-                       .ThenInclude(rm => rm.LearningModule)
-                    .FirstOrDefaultAsync(r => r.Id == roadmapId && !r.IsDeleted);
+                .Include(r => r.RoadmapModules)
+                .ThenInclude(rm => rm.LearningModule)
+                .FirstOrDefaultAsync(r => r.Id == roadmapId && !r.IsDeleted);
+
             if (roadmap == null)
                 throw new NotFoundException($"Roadmap with ID {roadmapId} not found.");
+
             var modules = await _moduleRepo.Query()
-                .Where(m=>moduleIds.Contains(m.Id)&& !m.IsDeleted)
+                .Where(m => moduleIds.Contains(m.Id) && !m.IsDeleted)
                 .ToListAsync();
+
             if (roadmap.RoadmapModules == null)
-            {
                 roadmap.RoadmapModules = new List<RoadmapModule>();
-            }
+
             var existingModuleIds = roadmap.RoadmapModules.Select(rm => rm.ModuleId).ToHashSet();
 
-            for (int i= 0; i < moduleIds.Count; i++)
+            foreach (var module in modules)
             {
-                int moduleId = moduleIds[i];
+                if (!existingModuleIds.Contains(module.Id))
                 {
-                    if (!existingModuleIds.Contains(moduleId))
+                    roadmap.RoadmapModules.Add(new RoadmapModule
                     {
-                        roadmap.RoadmapModules.Add(new RoadmapModule
-                        {
-                            RoadmapId = roadmapId,
-                            ModuleId = moduleId,
-                            Order = 0
-                        });
-                    }
+                        RoadmapId = roadmapId,
+                        ModuleId = module.Id,
+                        Order = module.OrderInRoadmap  // ✅ Assign correct order from module
+                    });
                 }
             }
-            
+
             await _unitOfWork.SaveChangesAsync();
+
             var roadmapDto = _mapper.Map<RoadmapDto>(roadmap);
             return ApiResponse<RoadmapDto>.SuccessResponse(roadmapDto, "Modules assigned to roadmap successfully");
         }
+
         public async Task<ApiResponse<RoadmapDto>> UpdateRoadmapAsync(int roadmapId, UpdateRoadmapDto dto)
         {
             var existingRoadmap = await _roadmapRepo.GetByIdAsync(roadmapId)

@@ -39,9 +39,7 @@ namespace MentorAi_backd.Infrastructure.Persistance.Data
         public DbSet<TestCase> TestCases { get; set; }
         public DbSet<TestCaseResultEntity> TestCaseResults { get; set; }
 
-        public DbSet<CodeExecutionResult> CodeExcecutionResults { get; set; } = default!;
-        public DbSet<TestCaseExecutionResult> TestCaseExecutionResults { get; set; } = default!;
-
+       
         // Automatically sets timestamps (CreatedAt and LastUpdatedAt) for entities inheriting from BaseEntity.
         public override int SaveChanges()
         {

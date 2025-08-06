@@ -10,6 +10,7 @@ namespace MentorAi_backd.Application.DTOs.ModulesDto
     public class CreateModuleDto
     {
         [Required, StringLength(200)]
+        
         public string Title { get; set; } = default!;
 
         [StringLength(1_000)]
@@ -17,6 +18,8 @@ namespace MentorAi_backd.Application.DTOs.ModulesDto
 
         [Required, StringLength(50)]
         public string ResourceType { get; set; } = default!;
+        [Required]
+        public int OrderInRoadmap { get; set; }
 
         [Required, StringLength(500)]
         public string ResourceIdentifier { get; set; } = default!;

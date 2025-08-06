@@ -15,7 +15,7 @@ namespace MentorAi_backd.Infrastructure.Handlers
     {
         private readonly MentorAiDbContext _context;
         private readonly IBackgroundJobQueue _jobQueue;
-        public CreateSubmissionHandler(MentorAi_backd context, IBackgroundJobQueue jobQueue)
+        public CreateSubmissionHandler(MentorAiDbContext context, IBackgroundJobQueue jobQueue)
         {
             _context = context;
             _jobQueue = jobQueue;

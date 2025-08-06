@@ -9,13 +9,9 @@ namespace MentorAi_backd.Application.DTOs.ProblemDto
 {
     public class CreateSubmissionDto
     {
-        public int Id { get; set; }
         public int StudentId { get; set; }
         public int ProblemId { get; set; }
         public string Code { get; set; }
         public string Language { get; set; }
-        public DateTime ProblemStartTime { get; set; }
-        public SubmissionStatus Status { get; set; }
-        public string TestResults { get; set; }
     }
 }

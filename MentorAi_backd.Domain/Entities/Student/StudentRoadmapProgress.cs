@@ -20,6 +20,7 @@ namespace MentorAi_backd.Domain.Entities.Student
         [JsonIgnore]
         public Roadmap Roadmap { get; set; } = default!;
 
+        public double thresholdmark { get; set; } = 0.0;
         public double CurrentProgressPercentage { get; set; } = 0.0;
         public int? CurrentModuleId { get; set; } 
         public LearningModule? CurrentModule { get; set; }

@@ -8,6 +8,8 @@ namespace MentorAi_backd.Domain.Entities.Problems
 {
     public class TestCase
     {
+        public string Output;
+
         public int Id { get; set; }
         public int ProblemId { get; set; }
         public string Input { get; set; }

@@ -5,7 +5,7 @@
 namespace MentorAi_backd.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class studentprofile : Migration
+    public partial class Unique : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

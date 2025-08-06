@@ -23,6 +23,7 @@ namespace MentorAi_backd.Domain.Entities.Problems
             public int ProblemId { get; set; }
             
             public string Code { get; set; }
+            [Required]
             public string Language { get; set; } 
 
             public DateTime SubmissionTime { get; set; }

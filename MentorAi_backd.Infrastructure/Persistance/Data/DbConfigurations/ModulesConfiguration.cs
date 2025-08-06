@@ -14,6 +14,8 @@ namespace MentorAi_backd.Infrastructure.Persistance.Data.DbConfigurations
         public void Configure(EntityTypeBuilder<LearningModule> builder)
         {
             builder.HasKey(m => m.Id);
+            builder.HasIndex(t => t.Title)
+                .IsUnique();
             
             builder.HasMany(m=>m.Problems)
                 .WithOne(p=> p.LearningModule)

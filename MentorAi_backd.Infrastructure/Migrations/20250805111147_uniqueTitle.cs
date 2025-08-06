@@ -5,7 +5,7 @@
 namespace MentorAi_backd.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class lastlogupdate : Migration
+    public partial class uniqueTitle : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

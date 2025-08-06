@@ -1,15 +1,17 @@
-﻿using System;
+﻿using AutoMapper;
+using MentorAi_backd.Application.Common.Exceptions;
+using MentorAi_backd.Application.DTOs.ModulesDto;
+using MentorAi_backd.Application.Interfaces;
+using MentorAi_backd.Domain.Entities.UserEntity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using AutoMapper;
-using MentorAi_backd.Application.Common.Exceptions;
-using MentorAi_backd.Application.DTOs.ModulesDto;
-using MentorAi_backd.Application.Interfaces;
-using MentorAi_backd.Domain.Entities.UserEntity;
-using Microsoft.Extensions.Logging;
+using Microsoft.Data.SqlClient;
 
 namespace MentorAi_backd.Infrastructure.Persistance.Repositories
 {
@@ -74,7 +76,17 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
                 throw new BadRequestException("LearningModule data cannot be null.");
             var module = _mapper.Map<LearningModule>(moduleDto);
             await _modules.AddAsync(module);
-            await _unitOfWork.SaveChangesAsync();
+            try
+            {
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex) when (ex.InnerException is SqlException sqlEx &&
+                                               (sqlEx.Number == 2601 || sqlEx.Number == 2627))
+            {
+                // SQL Error 2601 = Unique constraint violated
+                // SQL Error 2627 = Primary key violation
+                return ApiResponse<ModuleDto>.ErrorResponse("A module with the same title already exists.", 400);
+            }
             var createdDto = _mapper.Map<ModuleDto>(module);
             return ApiResponse<ModuleDto>.SuccessResponse(createdDto, "LearningModule added successfully.");
         }
