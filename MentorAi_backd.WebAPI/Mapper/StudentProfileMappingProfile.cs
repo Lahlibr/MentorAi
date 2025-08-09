@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using DryIoc.ImTools;
 using MentorAi_backd.Application.DTOs.ProfileDto;
+using MentorAi_backd.Application.DTOs.RoadmapDto;
+using MentorAi_backd.Application.DTOs.StudentDto;
 using MentorAi_backd.Domain.Entities.Student;
 using MentorAi_backd.Domain.Entities.UserEntity;
 
@@ -58,7 +60,10 @@ namespace MentorAi_backd.WebAPI.Mapper
                 dest.LastActiveModuleTitle = latest?.CurrentModule?.Title ?? "No Active LearningModule";
             });
 
-            
+            CreateMap<UserBadge, BadgeDto>();
+            CreateMap<StudentCertification, CertificationDto>();
+           
+
         }
     }
 }

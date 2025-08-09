@@ -10,11 +10,11 @@ namespace MentorAi_backd.WebAPI.Controllers
 {
     public class AdminService : IAdminService
     {
-        private readonly IGeneric<User> _userRepo;
+        private readonly IGenericRepository<User> _userRepo;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AdminService(IGeneric<User> userRepo, IMapper mapper, IUnitOfWork unitOfWork)
+        public AdminService(IGenericRepository<User> userRepo, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _userRepo = userRepo;
             _mapper = mapper;

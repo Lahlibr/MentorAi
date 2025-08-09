@@ -12,14 +12,14 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
 {
     public class ReviewerService : IReviwerService
     {
-        private readonly  IGeneric<ReviewerProfile> _reviewer;
-        private readonly IGeneric<User> _userRepo;
+        private readonly  IGenericRepository<ReviewerProfile> _reviewer;
+        private readonly IGenericRepository<User> _userRepo;
         private readonly IMapper _mapper;
         private readonly ILogger<ReviewerService> _logger;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ReviewerService(IGeneric<ReviewerProfile> reviewer,
-            IGeneric<User> userRepo,
+        public ReviewerService(IGenericRepository<ReviewerProfile> reviewer,
+            IGenericRepository<User> userRepo,
             IMapper mapper,
             ILogger<ReviewerService> logger,
             IUnitOfWork unitOfWork)

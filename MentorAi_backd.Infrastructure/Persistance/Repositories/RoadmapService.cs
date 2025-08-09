@@ -18,19 +18,19 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
     public class RoadmapService : IRoadmapService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IGeneric<Roadmap> _roadmapRepo;
-        private readonly IGeneric<StudentRoadmapProgress> _progressRepo;
+        private readonly IGenericRepository<Roadmap> _roadmapRepo;
+        private readonly IGenericRepository<StudentRoadmapProgress> _progressRepo;
         private readonly IMapper _mapper;
         private readonly ILogger<RoadmapService> _logger;
-        private readonly IGeneric<LearningModule> _moduleRepo;
+        private readonly IGenericRepository<LearningModule> _moduleRepo;
 
         public RoadmapService(
             IUnitOfWork unitOfWork,
-            IGeneric<Roadmap> roadmapRepo,
-            IGeneric<StudentRoadmapProgress> progressRepo,
+            IGenericRepository<Roadmap> roadmapRepo,
+            IGenericRepository<StudentRoadmapProgress> progressRepo,
             IMapper mapper,
             ILogger<RoadmapService> logger,
-            IGeneric<LearningModule> moduleRepo)
+            IGenericRepository<LearningModule> moduleRepo)
         {
             _unitOfWork = unitOfWork;
             _roadmapRepo = roadmapRepo;

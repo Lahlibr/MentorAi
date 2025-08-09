@@ -147,7 +147,7 @@ builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IRoadmapService, RoadmapService>();
 builder.Services.AddScoped<IModulesService, ModulesService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped(typeof(IGeneric<>), typeof(Generic<>));
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped< GradingService>();
 builder.Services.AddScoped<ICodeRunnerService, CodeRunnerService>();
 builder.Services.AddSingleton<IBackgroundJobQueue, BackgroundJobQueue>();

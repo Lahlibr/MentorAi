@@ -31,7 +31,7 @@ namespace MentorAi_backd.Infrastructure.Handlers
                 .Where(s => s.StudentId == request.StudentId)
                 .ToListAsync(cancellationToken);
 
-            var problemGroups = submissions.GroupBy(s=>s.ProblemId)
+            var problemGroups = submissions.GroupBy(s => s.ProblemId)
                 .Select(g => new ProblemPerformanceDto
                 {
                     ProblemId = g.Key,
@@ -39,8 +39,10 @@ namespace MentorAi_backd.Infrastructure.Handlers
                     Attempts = g.Count(),
                     SuccessfulAttempts = g.Count(s => s.IsCorrect),
                     AverageTimeToSolve = g.Average(s => s.ExecutionTime),
-                    SuccessRate = (double)g.Count(s => s.IsCorrect) / g.Count()
+                    SuccessRate = (double)g.Count(s => s.IsCorrect) / g.Count(),
+                    Submissions = g.ToList() 
                 }).ToList();
+
             var problemPerformances = problemGroups.Select(pg =>
             {
                 var firstCorrect = pg.Submissions.FirstOrDefault(s => s.IsCorrect);

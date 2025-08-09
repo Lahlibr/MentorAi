@@ -5,13 +5,13 @@ using System.Linq.Expressions;
 
 namespace MentorAi_backd.Repositories.Implementations
 {
-    public class Generic<TEntity> : IGeneric<TEntity>
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity>
     where TEntity : class
     {
         protected readonly MentorAiDbContext _context;
         protected readonly DbSet<TEntity> _dbSet;
 
-        public Generic(MentorAiDbContext context)
+        public GenericRepository(MentorAiDbContext context)
         {
             _context = context;
             _dbSet = context.Set<TEntity>();
@@ -55,6 +55,8 @@ namespace MentorAi_backd.Repositories.Implementations
             _dbSet.Remove(entity);
            
         }
+
+       
 
         // Used to build build advanced LINQ queries (.Include(), .OrderBy(), etc.) outside the repository.
         public IQueryable<TEntity> Query()

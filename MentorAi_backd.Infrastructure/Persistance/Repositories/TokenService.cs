@@ -15,8 +15,8 @@ namespace MentorAi_backd.Repositories.Implementations
     public class TokenService : ITokenService
     {
         private readonly IConfiguration _config;
-        private readonly IGeneric<ReviewerProfile> _reviewerRepo;
-        public  TokenService (IConfiguration config,IGeneric<ReviewerProfile> reviewerRepo)
+        private readonly IGenericRepository<ReviewerProfile> _reviewerRepo;
+        public  TokenService (IConfiguration config,IGenericRepository<ReviewerProfile> reviewerRepo)
         {
             _config = config;
             _reviewerRepo = reviewerRepo;

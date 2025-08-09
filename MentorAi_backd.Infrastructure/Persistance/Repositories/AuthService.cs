@@ -15,17 +15,17 @@ namespace MentorAi_backd.Repositories.Implementations
 {
     public class AuthService : IAuthService
     {
-        private readonly IGeneric<User> _userRepo;
-        private readonly IGeneric<StudentProfile> _studentProfileRepo;
-        private readonly IGeneric<ReviewerProfile> _reviwerRepo;
+        private readonly IGenericRepository<User> _userRepo;
+        private readonly IGenericRepository<StudentProfile> _studentProfileRepo;
+        private readonly IGenericRepository<ReviewerProfile> _reviwerRepo;
         private readonly ITokenService _TokenRepo;
         private readonly ILogger<AuthService> _logger;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AuthService(IGeneric<User> userRepository,
-            IGeneric<StudentProfile> studentProfileRepo,
-            IGeneric<ReviewerProfile> reviwerRepo,  
+        public AuthService(IGenericRepository<User> userRepository,
+            IGenericRepository<StudentProfile> studentProfileRepo,
+            IGenericRepository<ReviewerProfile> reviwerRepo,  
             IUnitOfWork unitOfWork,
             ITokenService tokenRepo, ILogger<AuthService> logger,IMapper mapper)
         {

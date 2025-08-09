@@ -4,11 +4,12 @@ using MentorAi_backd.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using MentorAi_backd.Application.DTOs.StudentDto;
 
 namespace MentorAi_backd.WebAPI.Controllers
 {
     [ApiController]
-    [Route("api/student/profile")]
+    [Route("api/student/")]
     [Authorize(Roles = "Student")]
     public class StudentProfileControllers : ControllerBase
     {
@@ -86,6 +87,17 @@ namespace MentorAi_backd.WebAPI.Controllers
             }
         }
 
+        [HttpGet("Dashboard")]
+        public async Task<ActionResult<ApiResponse<StudentProfileDashboardDto>>> GetDashboard()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+                return Unauthorized(ApiResponse<StudentProfileDashboardDto>.ErrorResponse("User not authenticated", null, 401));
+
+            var response = await _studentProfileService.GetDashboardAsync(userId);
+            int statusCode = response?.StatusCode ?? 200;
+            return StatusCode(statusCode, response);
+        }
 
 
 

@@ -17,14 +17,14 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
 {
     public class ModulesService : IModulesService
     {
-        private readonly IGeneric<LearningModule> _modules;
-        private readonly IGeneric<Roadmap> _moduleRepo;
+        private readonly IGenericRepository<LearningModule> _modules;
+        private readonly IGenericRepository<Roadmap> _moduleRepo;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<ModulesService> _logger;
         private readonly IMapper _mapper;
 
-        public ModulesService(IGeneric<LearningModule> modules,
-            IGeneric<Roadmap> moduleRepo,
+        public ModulesService(IGenericRepository<LearningModule> modules,
+            IGenericRepository<Roadmap> moduleRepo,
             IUnitOfWork unitOfWork,
             ILogger<ModulesService> logger,
             IMapper mapper)
@@ -83,8 +83,7 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
             catch (DbUpdateException ex) when (ex.InnerException is SqlException sqlEx &&
                                                (sqlEx.Number == 2601 || sqlEx.Number == 2627))
             {
-                // SQL Error 2601 = Unique constraint violated
-                // SQL Error 2627 = Primary key violation
+                
                 return ApiResponse<ModuleDto>.ErrorResponse("A module with the same title already exists.", 400);
             }
             var createdDto = _mapper.Map<ModuleDto>(module);

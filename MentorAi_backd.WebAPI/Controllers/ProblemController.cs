@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MentorAi_backd.Application.DTOs.ProblemDto;
 using MentorAi_backd.Infrastructure.Persistance.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,7 @@ namespace MentorAi_backd.WebAPI.Controllers
     {
         private readonly MentorAiDbContext _context;
         private readonly IMapper _mapper;
+        private readonly I
         public ProblemController(MentorAiDbContext context,IMapper mapper)
         {
             _context = context;
@@ -54,6 +56,16 @@ namespace MentorAi_backd.WebAPI.Controllers
 
             return Ok(problemDto);
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<ApiResponse<ProblemDto>>> CreateProblemAsync([FromBody] CreateProblemDto dto)
+        {
+            var res = await _
+        }
+
+
+
 
     }
 }

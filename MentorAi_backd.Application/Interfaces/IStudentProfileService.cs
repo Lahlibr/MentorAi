@@ -1,4 +1,5 @@
 ﻿using MentorAi_backd.Application.DTOs.ProfileDto;
+using MentorAi_backd.Application.DTOs.StudentDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,7 @@ namespace MentorAi_backd.Application.Interfaces
     {
         Task<ApiResponse<StudentProfileDto>> GetStudentProfileAsync(int userId);
         Task<ApiResponse<StudentProfileDto>> UpdateStudentProfileAsync(int userId, StudentUpdateDto studentProfileDto);
+
+        Task<ApiResponse<StudentProfileDashboardDto>> GetDashboardAsync(int userId);
     }
 }

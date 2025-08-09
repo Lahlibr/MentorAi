@@ -26,5 +26,7 @@ namespace MentorAi_backd.Domain.Entities.Student
         
         
         public Review? Review { get; set; }
+        public bool IsCorrect { get; set; }
+        public DateTime AttemptTime { get; set; }
     }
 }

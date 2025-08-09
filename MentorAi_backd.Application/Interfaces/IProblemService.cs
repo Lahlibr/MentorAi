@@ -9,6 +9,7 @@ namespace MentorAi_backd.Application.Interfaces
 {
     public interface IProblemService
     {
-        Task<IEnumerable<ProblemDto>> GetAllProblemAsync(string? difficulty = null, string? category = null);
+        Task<ApiResponse<ProblemDto>> GetAllProblemAsync(int id);
+        Task<ApiResponse<ProblemDto>> CreateAsync(CreateProblemDto dto);
     }
 }

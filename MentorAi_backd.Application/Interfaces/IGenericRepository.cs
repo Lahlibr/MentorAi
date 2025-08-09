@@ -2,7 +2,7 @@
 
 namespace MentorAi_backd.Application.Interfaces
 {
-    public interface IGeneric <TEntity>
+    public interface IGenericRepository <TEntity>
         where TEntity : class
     {
         Task<TEntity?> GetByIdAsync(int id);
@@ -15,6 +15,7 @@ namespace MentorAi_backd.Application.Interfaces
         
         Task UpdateRange(IEnumerable<TEntity> entities);
         void Delete(TEntity entity);
+        
         IQueryable<TEntity> Query();
     }
 }
