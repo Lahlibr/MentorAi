@@ -42,6 +42,8 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
                 throw new BadRequestException("LearningModule data cannot be null.");
             var problem = _mapper.Map<Problem>(dto);
             await _repository.AddAsync(problem);
+            
+
             try
             {
                 await _unitOfWork.SaveChangesAsync();
@@ -49,7 +51,7 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error on Creating Problem");
-                return ApiResponse<ProblemDto>.ErrorResponse("Error on Creating Problem");
+                return ApiResponse<ProblemDto>.ErrorResponse($"Error on Creating Problem: {ex.Message}");
             }
 
             var createDto = _mapper.Map<ProblemDto>(problem);
@@ -78,9 +80,11 @@ namespace MentorAi_backd.Infrastructure.Persistance.Repositories
             }
             catch (Exception ex)
             {
-                _logger.LogInformation(ex,"Error on Updating Problem");
-                return ApiResponse<>.ErrorResponse("Error Updating Problem");
+                _logger.LogInformation(ex, "Error on Updating Problem");
+                return ApiResponse<ProblemDto>.ErrorResponse("Error Updating Problem");
             }
+            var result =_mapper.Map<ProblemDto>(problem);
+            return ApiResponse<ProblemDto>.SuccessResponse(result, "Update Success fully");
         }
 
         public async Task<ApiResponse<string>> DeleteAsync(int id)

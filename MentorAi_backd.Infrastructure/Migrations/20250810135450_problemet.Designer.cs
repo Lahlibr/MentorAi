@@ -4,6 +4,7 @@ using MentorAi_backd.Infrastructure.Persistance.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MentorAi_backd.Infrastructure.Migrations
 {
     [DbContext(typeof(MentorAiDbContext))]
-    partial class MentorAiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250810135450_problemet")]
+    partial class problemet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,36 +24,6 @@ namespace MentorAi_backd.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("MentorAi_backd.Application.DTOs.ProblemDto.ProblemLanguageSolution", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ExpectedSolutionHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Language")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProblemId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SolutionTemplate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProblemId");
-
-                    b.ToTable("ProblemLanguageSolution");
-                });
 
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.Problems.Problem", b =>
                 {
@@ -63,12 +36,6 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -86,39 +53,15 @@ namespace MentorAi_backd.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ExampleTestCasesJson")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("HiddenTestCasesJson")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("InputFormat")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastLogout")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("LastUpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastUpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("ModuleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderInModule")
                         .HasColumnType("int");
 
                     b.Property<string>("OutputFormat")
@@ -1094,17 +1037,6 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("MentorAi_backd.Application.DTOs.ProblemDto.ProblemLanguageSolution", b =>
-                {
-                    b.HasOne("MentorAi_backd.Domain.Entities.Problems.Problem", "Problem")
-                        .WithMany("LanguageSolutions")
-                        .HasForeignKey("ProblemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Problem");
-                });
-
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.Problems.Problem", b =>
                 {
                     b.HasOne("MentorAi_backd.Domain.Entities.UserEntity.LearningModule", "LearningModule")
@@ -1341,8 +1273,6 @@ namespace MentorAi_backd.Infrastructure.Migrations
 
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.Problems.Problem", b =>
                 {
-                    b.Navigation("LanguageSolutions");
-
                     b.Navigation("Submission");
 
                     b.Navigation("TestCases");

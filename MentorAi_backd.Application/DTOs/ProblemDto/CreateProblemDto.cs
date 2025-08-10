@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MentorAi_backd.Domain.Enums;
 
 namespace MentorAi_backd.Application.DTOs.ProblemDto
@@ -40,10 +37,16 @@ namespace MentorAi_backd.Application.DTOs.ProblemDto
 
         [Required]
         [MinLength(1, ErrorMessage = "At least one example output is required.")]
-        public List<string> ExampleOutputs { get; set; } 
+        public List<string> ExampleOutputs { get; set; }
 
         [Required]
         [MinLength(1, ErrorMessage = "At least one hidden test case is required.")]
         public List<string> HiddenTestCases { get; set; }
+
+        
+
+        [Required]
+    [MinLength(1, ErrorMessage = "At least one language solution is required.")]
+    public List<LanguageSolutionDto> LanguageSolutions { get; set; }
     }
 }

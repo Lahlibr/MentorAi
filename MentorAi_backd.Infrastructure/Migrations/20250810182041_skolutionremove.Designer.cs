@@ -4,6 +4,7 @@ using MentorAi_backd.Infrastructure.Persistance.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MentorAi_backd.Infrastructure.Migrations
 {
     [DbContext(typeof(MentorAiDbContext))]
-    partial class MentorAiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250810182041_skolutionremove")]
+    partial class skolutionremove
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,6 +90,9 @@ namespace MentorAi_backd.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ExampleTestCasesJson")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExpectedSolutionHash")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HiddenTestCasesJson")

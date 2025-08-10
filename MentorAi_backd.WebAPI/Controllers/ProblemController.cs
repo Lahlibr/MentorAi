@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MentorAi_backd.Application.DTOs.ProblemDto;
+using MentorAi_backd.Application.Interfaces;
 using MentorAi_backd.Infrastructure.Persistance.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,12 @@ namespace MentorAi_backd.WebAPI.Controllers
     {
         private readonly MentorAiDbContext _context;
         private readonly IMapper _mapper;
-        private readonly I
-        public ProblemController(MentorAiDbContext context,IMapper mapper)
+        private readonly IProblemService _problem;
+        public ProblemController(MentorAiDbContext context,IMapper mapper,IProblemService problem)
         {
             _context = context;
             _mapper = mapper;
+            _problem = problem;
         }
 
         [HttpGet]
@@ -61,7 +63,15 @@ namespace MentorAi_backd.WebAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ApiResponse<ProblemDto>>> CreateProblemAsync([FromBody] CreateProblemDto dto)
         {
-            var res = await _
+            var res = await _problem.CreateAsync(dto);
+            return StatusCode(res.StatusCode, res);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var response = await _problem.DeleteAsync(id);
+            return StatusCode(response.StatusCode, response);
         }
 
 

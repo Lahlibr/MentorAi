@@ -155,6 +155,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped< CompilerFactory>();
 builder.Services.AddScoped<IExecutor, ProcessExecutor>();
 builder.Services.AddScoped<AnalyticsService>();
+builder.Services.AddScoped<IProblemService, ProblemService>();
 
 
 // SignalR Hub for real-time updates

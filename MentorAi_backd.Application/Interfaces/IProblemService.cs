@@ -11,5 +11,9 @@ namespace MentorAi_backd.Application.Interfaces
     {
         Task<ApiResponse<ProblemDto>> GetAllProblemAsync(int id);
         Task<ApiResponse<ProblemDto>> CreateAsync(CreateProblemDto dto);
+
+        Task<ApiResponse<List<ProblemDto>>> GetAllAsync();
+        Task<ApiResponse<ProblemDto>> UpdateAsync(int id, CreateProblemDto dto);
+        Task<ApiResponse<string>> DeleteAsync(int id);
     }
 }
