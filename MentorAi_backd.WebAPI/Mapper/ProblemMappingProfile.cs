@@ -56,6 +56,12 @@ namespace MentorAi_backd.WebAPI.Mapper
                     })
                 .ToList()
             ));
+            CreateMap<LanguageSolutionDto, ProblemLanguageSolution>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.ProblemId, opt => opt.Ignore())
+                .ForMember(dest => dest.Problem, opt => opt.Ignore())
+                .ReverseMap();
         }
     }
+    
 }

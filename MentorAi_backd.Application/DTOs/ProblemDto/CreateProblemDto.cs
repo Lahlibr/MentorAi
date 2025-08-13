@@ -38,6 +38,9 @@ namespace MentorAi_backd.Application.DTOs.ProblemDto
         [Required]
         [MinLength(1, ErrorMessage = "At least one example output is required.")]
         public List<string> ExampleOutputs { get; set; }
+        [Required]
+        [MinLength(1, ErrorMessage = "At least one tag is required.")]
+        public List<string> Tags { get; set; }
 
         [Required]
         [MinLength(1, ErrorMessage = "At least one hidden test case is required.")]

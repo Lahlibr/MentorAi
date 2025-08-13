@@ -45,6 +45,9 @@ namespace MentorAi_backd.Domain.Entities.Problems
         public int OrderInModule { get; set; } = 0;
         public int? ModuleId { get; set; }
         public int? RoadmapId { get; set; }
+        public List<string> Tags { get; set; }
+
+        public int TestCasesCount { get; set; }
         public virtual ICollection<ProblemLanguageSolution> LanguageSolutions { get; set; } = new List<ProblemLanguageSolution>();
         public virtual ICollection<Submission> Submission { get; set; } = new List<Submission>();
         public virtual ICollection<TestCase> TestCases { get; set; } = new List<TestCase>();

@@ -18,9 +18,11 @@ namespace MentorAi_backd.Application.DTOs.ProblemDto
         public string OutputFormat { get; set; }
         public List<string> ExampleInputs { get; set; } = new List<string>();
         public List<string> ExampleOutputs { get; set; } = new List<string>();
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+       
         public List<LanguageSolutionDto> LanguageSolutions { get; set; } = new();
         public List<TestCaseResultDto> SampleTestCases { get; set; } = new();
+        public List<string>? HiddenTestCases { get; set; } = new();
+        public List<string> Tags { get; set; }
+        public int TestCasesCount { get; set; }
     }
 }

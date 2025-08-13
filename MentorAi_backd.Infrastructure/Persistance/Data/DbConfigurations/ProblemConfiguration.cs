@@ -19,7 +19,7 @@ namespace MentorAi_backd.Infrastructure.Persistance.Data.DbConfigurations
                 builder.ToTable("Problems");
 
                 builder.HasKey(p => p.Id);
-
+                builder.HasIndex(p => p.Title).IsUnique();
                 builder.Property(p => p.Title).IsRequired().HasMaxLength(255);
                 builder.Property(p => p.Description).IsRequired();
 
