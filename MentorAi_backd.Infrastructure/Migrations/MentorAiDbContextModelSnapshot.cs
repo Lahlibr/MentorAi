@@ -22,8 +22,7 @@ namespace MentorAi_backd.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-<<<<<<< Updated upstream
-=======
+
             modelBuilder.Entity("MentorAi_backd.Application.DTOs.ProblemDto.ProblemLanguageSolution", b =>
                 {
                     b.Property<int>("Id")
@@ -383,7 +382,7 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.ToTable("Reviews");
                 });
 
->>>>>>> Stashed changes
+
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.Student.ProblemAttempt", b =>
                 {
                     b.Property<int>("Id")
@@ -811,15 +810,14 @@ namespace MentorAi_backd.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-<<<<<<< Updated upstream
-=======
+
                     b.Property<int>("EstimatedHours")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
->>>>>>> Stashed changes
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -842,9 +840,9 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Property<int>("OrderInRoadmap")
                         .HasColumnType("int");
 
-<<<<<<< Updated upstream
-                    b.Property<int>("RoadmapId")
-=======
+
+                    b.Property<int>("RoadmapId");
+
                     b.Property<string>("Prerequisites")
                         .HasColumnType("nvarchar(max)");
 
@@ -858,7 +856,7 @@ namespace MentorAi_backd.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("RoadmapId")
->>>>>>> Stashed changes
+
                         .HasColumnType("int");
 
                     b.Property<string>("Title")

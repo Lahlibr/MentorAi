@@ -1,17 +1,16 @@
 ﻿using MentorAi_backd.Domain.Entities.Main;
-<<<<<<< HEAD
+using MentorAi_backd.Domain.Entities.UserEntity;
+
+
 using MentorAi_backd.Domain.Entities.Problems;
 using MentorAi_backd.Domain.Entities.Student;
 using System.Text.Json.Serialization;
-=======
-<<<<<<< Updated upstream
-=======
+
 using MentorAi_backd.Domain.Entities.Problems;
 using MentorAi_backd.Domain.Entities.Student;
 using System.Text.Json.Serialization;
 using MentorAi_backd.Domain.Enums;
->>>>>>> Stashed changes
->>>>>>> RoadmapModule
+
 
 namespace MentorAi_backd.Domain.Entities.UserEntity
 {
@@ -20,15 +19,12 @@ namespace MentorAi_backd.Domain.Entities.UserEntity
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-<<<<<<< HEAD
+
        
-=======
-<<<<<<< Updated upstream
-=======
+
         public int price { get; set; }
         public int? originalPrice { get; set; }
->>>>>>> Stashed changes
->>>>>>> RoadmapModule
+
         public string? ImageUrl { get; set; }
         public DifficultyLevelEnum DifficultyLevel { get; set; } 
         public int EstimatedCompletionHours { get; set; } 

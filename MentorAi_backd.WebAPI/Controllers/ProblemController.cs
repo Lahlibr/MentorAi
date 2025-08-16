@@ -35,7 +35,7 @@ namespace MentorAi_backd.WebAPI.Controllers
             {
                 problems = problemDtos,
                 total = problemDtos.Count,
-                easy = problemDtos.Count(p => p.Difficulty == DifficultyLevelEnum.Easy), // or "Easy" if mapped
+                easy = problemDtos.Count(p => p.Difficulty == DifficultyLevelEnum.Easy),
                 medium = problemDtos.Count(p => p.Difficulty == DifficultyLevelEnum.Medium),
                 hard = problemDtos.Count(p => p.Difficulty == DifficultyLevelEnum.Hard)
             };
@@ -57,7 +57,7 @@ namespace MentorAi_backd.WebAPI.Controllers
             var isAdmin = User.IsInRole("Admin");
 
             dto.SampleTestCases = problem.TestCases
-                .Where(tc => !tc.IsHidden || isAdmin) // students only see non-hidden ones
+                .Where(tc => !tc.IsHidden || isAdmin) 
                 .Select(tc => new TestCaseResultDto
                 {
                     Input = tc.Input,
@@ -74,8 +74,7 @@ namespace MentorAi_backd.WebAPI.Controllers
                     }).ToList()
                 : new List<TestCaseResultDto>();
 
-            if (problemDto == null)
-                return NotFound();
+           
 
             return Ok(dto);
         }

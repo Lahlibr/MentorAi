@@ -13,11 +13,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
-using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using CodingPlatform.ConsoleAnalytics.Services;
-using MentorAi_backd.Infrastructure.Compilers;
 using MentorAi_backd.Infrastructure.Executors;
 using MentorAi_backd.Infrastructure.Handlers;
 using MentorAi_backd.Infrastructure.Persistence.Repositories;
@@ -167,6 +165,9 @@ builder.Services.AddSignalR();
 //MediatR for CQRS pattern
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetStudentAnalyticsHandler>());
 
+
+///Programing Services
+builder.Services.AddScoped<JavaScriptCompiler>();
 
 // ---------------------------
 // 5. AutoMapper
