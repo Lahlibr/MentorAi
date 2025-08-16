@@ -12,6 +12,11 @@ using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using CodingPlatform.ConsoleAnalytics.Services;
+using MentorAi_backd.Infrastructure.Compilers;
+using MentorAi_backd.Infrastructure.Executors;
+using MentorAi_backd.Infrastructure.Handlers;
+using MentorAi_backd.Infrastructure.Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -133,6 +138,37 @@ builder.Services.AddCors(options =>
 // ---------------------------
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IStudentProfileService, StudentProfileService>();
+builder.Services.AddScoped<IReviwerService, ReviewerService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IRoadmapService, RoadmapService>();
+builder.Services.AddScoped<IModulesService, ModulesService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped< GradingService>();
+builder.Services.AddScoped<ICodeRunnerService, CodeRunnerService>();
+builder.Services.AddSingleton<IBackgroundJobQueue, BackgroundJobQueue>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped< CompilerFactory>();
+builder.Services.AddScoped<IExecutor, ProcessExecutor>();
+builder.Services.AddScoped<AnalyticsService>();
+builder.Services.AddScoped<IProblemService, ProblemService>();
+
+//language compiler 
+builder.Services.AddScoped<JavaScriptCompiler>();
+builder.Services.AddScoped<PythonCompiler>();
+builder.Services.AddScoped<CppCompiler>();
+builder.Services.AddScoped<JavaCompiler>();
+builder.Services.AddScoped<CSharpCompiler>();
+builder.Services.AddScoped<TypeScriptCompiler>();
+builder.Services.AddScoped<PhpCompiler>();
+builder.Services.AddScoped<RubyCompiler>();
+builder.Services.AddScoped<GoCompiler>();
+builder.Services.AddScoped<CCompiler>();
+
+
+// SignalR Hub for real-time updates
+builder.Services.AddSignalR();
 
 
 builder.Services.AddScoped<ITokenService, TokenService>();
@@ -214,7 +250,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "MentorAI API v1");
-        c.RoutePrefix = string.Empty; // Swagger UI at root
+        c.RoutePrefix = string.Empty;
+        c.ConfigObject.AdditionalItems["syntaxHighlight"] = new Dictionary<string, object>
+        {
+            ["activated"] = false
+        };
     });
 }
 
