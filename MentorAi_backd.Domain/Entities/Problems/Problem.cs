@@ -12,7 +12,7 @@ namespace MentorAi_backd.Domain.Entities.Problems
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(200)]
+        [MaxLength(255)]
         public string Title { get; set; }
 
         [Required]

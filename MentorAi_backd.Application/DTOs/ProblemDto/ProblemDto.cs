@@ -21,7 +21,7 @@ namespace MentorAi_backd.Application.DTOs.ProblemDto
        
         public List<LanguageSolutionDto> LanguageSolutions { get; set; } = new();
         public List<TestCaseResultDto> SampleTestCases { get; set; } = new();
-        public List<string>? HiddenTestCases { get; set; } = new();
+        public List<TestCaseResultDto>? HiddenTestCases { get; set; } = new();
         public List<string> Tags { get; set; }
         public int TestCasesCount { get; set; }
     }

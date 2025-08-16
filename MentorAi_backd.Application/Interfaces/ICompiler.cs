@@ -9,6 +9,6 @@ namespace MentorAi_backd.Application.Interfaces
 {
     public interface ICompiler
     {
-        Task<CompileResult> CompileAsync(string code, string tempDir);
+        Task<CompileResult> CompileAsync(string code, string workingDirectory);
     }
 }

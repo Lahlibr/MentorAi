@@ -22,9 +22,13 @@ namespace MentorAi_backd.Infrastructure.Executors
             {
                 TestCaseId = testCase.Id
             };
+
+            var (cmd, args) = GetExecutionCommand(language, execPath, tempDir);
+
             var psi = new ProcessStartInfo
             {
-                FileName = GetExecutionCommand(language, execPath, tempDir),
+                FileName = cmd,
+                Arguments = args,
                 WorkingDirectory = tempDir,
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
@@ -32,7 +36,15 @@ namespace MentorAi_backd.Infrastructure.Executors
                 UseShellExecute = false,
                 CreateNoWindow = true
             };
+
             using var proc = Process.Start(psi);
+            if (proc == null)
+            {
+                res.Success = false;
+                res.ErrorMessage = "Failed to start execution process";
+                throw new ExecutionException("Failed to start process for language " + language);
+            }
+
             if (!string.IsNullOrEmpty(testCase.Input))
             {
                 await proc.StandardInput.WriteAsync(testCase.Input);
@@ -47,7 +59,7 @@ namespace MentorAi_backd.Infrastructure.Executors
             }
             catch (OperationCanceledException)
             {
-                proc.Kill(true); // Kill process if it times out
+                proc.Kill(true);
                 throw new ExecutionException("Time limit exceeded");
             }
 
@@ -56,26 +68,33 @@ namespace MentorAi_backd.Infrastructure.Executors
             res.ActualOutput = (await proc.StandardOutput.ReadToEndAsync()).Trim();
             var error = (await proc.StandardError.ReadToEndAsync()).Trim();
 
-           
-            if (proc.ExitCode != 0)
+            res.Success = proc.ExitCode == 0; // Set Success based on ExitCode
+
+            if (!res.Success)
             {
-                throw new ExecutionException($"Runtime Error: {error}");
+                var errMsg = string.IsNullOrWhiteSpace(error) ? res.ActualOutput : error;
+                res.ErrorMessage = errMsg;
+                throw new ExecutionException($"Runtime Error: {errMsg}");
             }
 
             res.Passed = res.ActualOutput == testCase.ExpectedOutput.Trim();
             if (!res.Passed)
                 res.ErrorMessage = "Wrong Answer";
+
             return res;
         }
 
-        private string GetExecutionCommand(string language, string execPath, string tempDir) =>
-            language switch
+        private (string Command, string Args) GetExecutionCommand(string language, string execPath, string tempDir) =>
+            language.ToLowerInvariant() switch
             {
-                "python" => $"python \"{execPath}\"",
-                "java" => $"java -cp \"{tempDir}\" Solution",
-                "cpp" => $"\"{execPath}\"",
-                // ...other languages
+                "python" => ("python", $"\"{execPath}\""),
+                "java" => ("java", $"-cp \"{tempDir}\" Solution"),
+                "cpp" => ($"\"{execPath}\"", ""),
+                "javascript" or "js" => (@"C:\Program Files\nodejs\node.exe", $"\"{execPath}\""),
+                "typescript" or "ts" => ("ts-node", $"\"{execPath}\""),
+                "csharp" or "cs" => ("dotnet", $"run --project \"{Path.Combine(tempDir, "Solution.csproj")}\" --no-build --no-restore"),
                 _ => throw new ExecutionException($"Unsupported execution for {language}")
             };
     };
+    }
 }

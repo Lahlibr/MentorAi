@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace MentorAi_backd.WebAPI.Controllers
 {
     [ApiController]
-    [Route("api/admin/problems")]
+    [Route("api/problems")]
     public class ProblemController : ControllerBase
     {
         private readonly MentorAiDbContext _context;
@@ -45,30 +45,41 @@ namespace MentorAi_backd.WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProblemDto>> GetProblemById(int id)
         {
-            var problemDto = await _context.Problems
-                .Where(p => p.Id == id)
-                .Select(p => new ProblemDto
+            var problem = await _context.Problems
+                .Include(p => p.TestCases)
+                .Include(p => p.LanguageSolutions)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (problem == null)
+                return NotFound();
+
+            var dto = _mapper.Map<ProblemDto>(problem);
+            var isAdmin = User.IsInRole("Admin");
+
+            dto.SampleTestCases = problem.TestCases
+                .Where(tc => !tc.IsHidden || isAdmin) // students only see non-hidden ones
+                .Select(tc => new TestCaseResultDto
                 {
-                    Id = p.Id,
-                    Title = p.Title,
-                    Description = p.Description,
-                    Difficulty = p.DifficultyLevel,
-                    SampleTestCases = p.TestCases
-                        .Where(tc => !tc.IsHidden)
-                        .Select(tc => new TestCaseResultDto
-                        {
-                            Input = tc.Input,
-                            ExpectedOutput = tc.ExpectedOutput
-                        })
-                        .ToList()
-                })
-                .FirstOrDefaultAsync();
+                    Input = tc.Input,
+                    ExpectedOutput = tc.ExpectedOutput
+                }).ToList();
+
+            dto.HiddenTestCases = isAdmin
+                ? problem.TestCases
+                    .Where(tc => tc.IsHidden)
+                    .Select(tc => new TestCaseResultDto
+                    {
+                        Input = tc.Input,
+                        ExpectedOutput = tc.ExpectedOutput
+                    }).ToList()
+                : new List<TestCaseResultDto>();
 
             if (problemDto == null)
                 return NotFound();
 
-            return Ok(problemDto);
+            return Ok(dto);
         }
+
 
         [HttpPost]
         [Authorize(Roles = "Admin")]

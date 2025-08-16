@@ -14,5 +14,8 @@ namespace MentorAi_backd.Domain.Entities.Problems
         public string ErrorMessage { get; set; }
         public int ExecutionTime { get; set; }
         public int SubmissionId { get; set; }
+        public int MemoryUsed { get; set; }
+        public bool Success { get; set; }
+        public string Error { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using MentorAi_backd.Infrastructure.Persistance.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MentorAi_backd.Infrastructure.Migrations
 {
     [DbContext(typeof(MentorAiDbContext))]
-    partial class MentorAiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250815151607_Learnilgmodule")]
+    partial class Learnilgmodule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,8 +25,6 @@ namespace MentorAi_backd.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-<<<<<<< Updated upstream
-=======
             modelBuilder.Entity("MentorAi_backd.Application.DTOs.ProblemDto.ProblemLanguageSolution", b =>
                 {
                     b.Property<int>("Id")
@@ -383,7 +384,6 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.ToTable("Reviews");
                 });
 
->>>>>>> Stashed changes
             modelBuilder.Entity("MentorAi_backd.Domain.Entities.Student.ProblemAttempt", b =>
                 {
                     b.Property<int>("Id")
@@ -811,15 +811,12 @@ namespace MentorAi_backd.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-<<<<<<< Updated upstream
-=======
                     b.Property<int>("EstimatedHours")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
->>>>>>> Stashed changes
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -842,9 +839,6 @@ namespace MentorAi_backd.Infrastructure.Migrations
                     b.Property<int>("OrderInRoadmap")
                         .HasColumnType("int");
 
-<<<<<<< Updated upstream
-                    b.Property<int>("RoadmapId")
-=======
                     b.Property<string>("Prerequisites")
                         .HasColumnType("nvarchar(max)");
 
@@ -858,12 +852,11 @@ namespace MentorAi_backd.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("RoadmapId")
->>>>>>> Stashed changes
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.PrimitiveCollection<string>("Topics")
                         .IsRequired()
@@ -871,41 +864,6 @@ namespace MentorAi_backd.Infrastructure.Migrations
 
                     b.Property<int>("difficulty")
                         .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoadmapId");
-
-                    b.ToTable("Modules");
-                });
-
-            modelBuilder.Entity("MentorAi_backd.Domain.Entities.UserEntity.Problem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ResourceType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("RoadmapId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 

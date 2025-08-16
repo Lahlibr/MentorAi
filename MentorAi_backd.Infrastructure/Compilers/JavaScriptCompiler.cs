@@ -11,16 +11,33 @@ namespace MentorAi_backd.Infrastructure.Compilers
 {
     public class JavaScriptCompiler : ICompiler
     {
-        public async Task<CompileResult> CompileAsync(string code, string tempDir)
-        {
-            var filePath = Path.Combine(tempDir, "script.js");
-            await File.WriteAllTextAsync(filePath, code);
-
-            return new CompileResult
+      
+        
+            public async Task<CompileResult> CompileAsync(string code, string workingDirectory)
             {
-                Success = true,
-                ExecutablePath = filePath
-            };
-        }
+                try
+                {
+                    var fileName = Path.Combine(workingDirectory, "solution.js");
+                    await File.WriteAllTextAsync(fileName, code);
+
+                  
+                    return new CompileResult
+                    {
+                        Success = true,
+                        ExecutablePath = fileName,
+                        Error = null
+                    };
+                }
+                catch (Exception ex)
+                {
+                    return new CompileResult
+                    {
+                        Success = false,
+                        Error = ex.Message,
+                        ExecutablePath = null
+                    };
+                }
+            }
     }
+    
 }
